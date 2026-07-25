@@ -22,134 +22,125 @@ const features = [
 
 export default function WhyDropSection() {
   return (
-    <section className="bg-[#060606] relative overflow-hidden">
+    <section className="bg-[#F5F0E8] relative overflow-hidden">
       {/* ── CSS keyframes ── */}
       <style>{`
-        @keyframes wd-pulse {
-          0%, 100% { opacity: 0.04; transform: scale(1); }
-          50%      { opacity: 0.08; transform: scale(1.05); }
-        }
-        @keyframes wd-line-grow {
-          from { transform: scaleX(0); }
-          to   { transform: scaleX(1); }
-        }
         @keyframes wd-shimmer {
           0%   { background-position: -200% 0; }
           100% { background-position: 200% 0; }
         }
+        @keyframes wd-float {
+          0%, 100% { transform: translate(0, 0) rotate(0deg); }
+          33%      { transform: translate(12px, -8px) rotate(1deg); }
+          66%      { transform: translate(-8px, 6px) rotate(-0.5deg); }
+        }
         .wd-card {
-          --border-alpha: 0.06;
-          border: 1px solid rgba(255,255,255, var(--border-alpha));
-          transition: --border-alpha 0.5s, transform 0.5s cubic-bezier(.22,1,.36,1), box-shadow 0.5s;
+          border: 1px solid rgba(17,17,17,0.06);
+          transition: transform 0.5s cubic-bezier(.22,1,.36,1), box-shadow 0.5s, border-color 0.5s;
         }
         .wd-card:hover {
-          --border-alpha: 0.14;
-          transform: translateY(-4px);
-          box-shadow: 0 32px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.06);
+          border-color: rgba(201,168,76,0.25);
+          transform: translateY(-3px);
+          box-shadow: 0 24px 64px rgba(17,17,17,0.08), 0 0 0 1px rgba(201,168,76,0.08);
         }
         .wd-num {
-          background: linear-gradient(135deg, #C9A84C 0%, #8B7333 100%);
+          background: linear-gradient(135deg, #C9A84C 0%, #A68B3A 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
         }
-        .wd-title-line {
-          transform-origin: left;
-          animation: wd-line-grow 1.2s ease-out both;
-        }
       `}</style>
 
-      {/* ── Ambient orbs (CSS-only) ── */}
+      {/* ── Decorative floating shapes (CSS-only) ── */}
       <div
-        className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full pointer-events-none"
+        className="absolute top-[10%] right-[5%] w-[350px] h-[350px] rounded-full pointer-events-none opacity-40"
+        style={{
+          background: 'radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%)',
+          animation: 'wd-float 20s ease-in-out infinite',
+        }}
+      />
+      <div
+        className="absolute bottom-[5%] left-[3%] w-[280px] h-[280px] rounded-full pointer-events-none opacity-30"
         style={{
           background: 'radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%)',
-          animation: 'wd-pulse 8s ease-in-out infinite',
-        }}
-      />
-      <div
-        className="absolute bottom-[-15%] left-[-8%] w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{
-          background: 'radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%)',
-          animation: 'wd-pulse 10s ease-in-out infinite 2s',
+          animation: 'wd-float 16s ease-in-out infinite 4s',
         }}
       />
 
-      {/* ── Content container ── */}
-      <div className="max-w-6xl mx-auto px-6 md:px-12 py-28 md:py-40 relative z-10">
+      {/* ── Content ── */}
+      <div className="max-w-5xl mx-auto px-6 md:px-12 py-28 md:py-40 relative z-10">
 
-        {/* ── Header block ── */}
-        <div className="mb-24 md:mb-32">
-          {/* Eyebrow */}
-          <span className="inline-block text-[#C9A84C] text-[11px] font-semibold tracking-[0.25em] uppercase mb-6 opacity-70">
+        {/* ── Header ── */}
+        <div className="mb-20 md:mb-28">
+          <span className="inline-block text-[#C9A84C] text-[11px] font-semibold tracking-[0.25em] uppercase mb-5">
             Why Choose Us
           </span>
 
-          <h2 className="font-[var(--font-heading)] text-6xl sm:text-7xl md:text-8xl lg:text-[7rem] font-bold tracking-tight uppercase leading-[0.88] text-white/90">
+          <h2 className="font-[var(--font-heading)] text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight uppercase leading-[0.9] text-[#111]">
             Why{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #C9A84C 0%, #E6D5A0 50%, #C9A84C 100%)',
+                background: 'linear-gradient(135deg, #C9A84C 0%, #D4B96A 50%, #A68B3A 100%)',
                 backgroundSize: '200% auto',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                animation: 'wd-shimmer 4s linear infinite',
+                animation: 'wd-shimmer 5s linear infinite',
               }}
             >
               Drop.
             </span>
           </h2>
 
-          {/* Decorative gold line */}
-          <div className="mt-8 mb-10 h-px w-24 bg-gradient-to-r from-[#C9A84C] to-transparent wd-title-line" />
+          {/* Gold accent line */}
+          <div className="mt-7 mb-8 h-px w-20 bg-gradient-to-r from-[#C9A84C] to-transparent" />
 
-          <p className="text-[#999] text-base md:text-lg max-w-lg leading-relaxed font-light">
+          <p className="text-[#666] text-base md:text-lg max-w-md leading-relaxed font-light">
             Hydration stripped back to its purest form, engineered for the demands of a high-performance life.
           </p>
         </div>
 
         {/* ── Feature cards ── */}
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-4">
           {features.map((f, i) => (
             <article
               key={f.num}
-              className="wd-card group rounded-2xl md:rounded-3xl bg-white/[0.02] backdrop-blur-sm relative overflow-hidden"
+              className="wd-card group rounded-2xl md:rounded-3xl bg-white/70 backdrop-blur-sm relative overflow-hidden"
               style={{ animationDelay: `${i * 0.15}s` }}
             >
-              {/* Hover gold glow (CSS-only) */}
+              {/* Subtle hover glow */}
               <div
                 className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
                 style={{
-                  background: 'radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.04) 0%, transparent 60%)',
+                  background: 'radial-gradient(ellipse at 10% 50%, rgba(201,168,76,0.06) 0%, transparent 50%)',
                 }}
               />
 
-              <div className="relative z-10 flex flex-col md:flex-row md:items-start gap-6 md:gap-12 p-8 md:p-12">
+              <div className="relative z-10 flex flex-col md:flex-row md:items-start gap-5 md:gap-10 p-7 md:p-10">
                 {/* Number */}
-                <div className="shrink-0 flex items-baseline gap-4 md:w-32">
-                  <span className="wd-num text-5xl md:text-6xl font-bold tracking-tighter leading-none font-[var(--font-heading)]">
+                <div className="shrink-0 md:w-24">
+                  <span className="wd-num text-4xl md:text-5xl font-bold tracking-tighter leading-none font-[var(--font-heading)]">
                     {f.num}
                   </span>
                 </div>
 
-                {/* Vertical separator — desktop only */}
+                {/* Vertical divider */}
                 <div className="hidden md:block w-px self-stretch bg-gradient-to-b from-transparent via-[#C9A84C]/20 to-transparent" />
 
-                {/* Text block */}
+                {/* Text */}
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-2xl md:text-3xl font-bold tracking-tight uppercase text-white/90 mb-3 font-[var(--font-heading)] group-hover:text-[#C9A84C] transition-colors duration-500">
+                  <h3 className="text-xl md:text-2xl font-bold tracking-tight uppercase text-[#111] mb-2 font-[var(--font-heading)] group-hover:text-[#9A7B30] transition-colors duration-500">
                     {f.title}
                   </h3>
-                  <p className="text-[#777] text-sm md:text-base leading-relaxed max-w-xl font-light group-hover:text-[#999] transition-colors duration-500">
+                  <p className="text-[#777] text-sm md:text-[15px] leading-relaxed max-w-xl font-light group-hover:text-[#555] transition-colors duration-500">
                     {f.body}
                   </p>
                 </div>
 
-                {/* Arrow indicator */}
-                <div className="hidden md:flex items-center justify-center shrink-0 w-10 h-10 rounded-full border border-white/[0.08] group-hover:border-[#C9A84C]/30 group-hover:bg-[#C9A84C]/5 transition-all duration-500 self-center">
+                {/* Arrow */}
+                <div className="hidden md:flex items-center justify-center shrink-0 w-9 h-9 rounded-full border border-[#111]/[0.08] group-hover:border-[#C9A84C]/40 group-hover:bg-[#C9A84C]/[0.07] transition-all duration-500 self-center">
                   <svg
-                    className="w-4 h-4 text-white/20 group-hover:text-[#C9A84C]/70 transition-colors duration-500 group-hover:translate-x-0.5 transform"
+                    className="w-3.5 h-3.5 text-[#111]/20 group-hover:text-[#C9A84C] transition-all duration-500 group-hover:translate-x-0.5 transform"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -163,13 +154,13 @@ export default function WhyDropSection() {
           ))}
         </div>
 
-        {/* ── Bottom accent line ── */}
-        <div className="mt-20 flex items-center gap-4 opacity-30">
-          <div className="h-px flex-1 bg-gradient-to-r from-[#C9A84C]/40 to-transparent" />
-          <span className="text-[10px] text-[#C9A84C] tracking-[0.3em] uppercase font-medium">
+        {/* ── Bottom tagline ── */}
+        <div className="mt-16 flex items-center gap-4 opacity-25">
+          <div className="h-px flex-1 bg-gradient-to-r from-[#C9A84C]/50 to-transparent" />
+          <span className="text-[10px] text-[#9A7B30] tracking-[0.3em] uppercase font-medium whitespace-nowrap">
             Purity · Precision · Performance
           </span>
-          <div className="h-px flex-1 bg-gradient-to-l from-[#C9A84C]/40 to-transparent" />
+          <div className="h-px flex-1 bg-gradient-to-l from-[#C9A84C]/50 to-transparent" />
         </div>
       </div>
     </section>

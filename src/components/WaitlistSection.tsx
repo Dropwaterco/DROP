@@ -61,12 +61,12 @@ export default function WaitlistSection() {
     <section
       ref={sectionRef}
       id="waitlist"
-      className="relative bg-[#050505] py-24 sm:py-28 md:py-36 px-5 sm:px-8 md:px-16 overflow-hidden"
+      className="relative bg-[#1A1512] py-24 sm:py-28 md:py-36 px-5 sm:px-8 md:px-16 overflow-hidden"
     >
-      {/* Premium ambient glow */}
+      {/* Warm ambient glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(800px,150vw)] h-[min(800px,150vw)] bg-[#C9A84C]/[0.04] rounded-full blur-[80px] md:blur-[120px] pointer-events-none" />
 
-      <div ref={formRef} className="max-w-2xl mx-auto relative z-10 bg-white/[0.02] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-8 sm:p-10 md:p-14 shadow-[0_30px_80px_rgba(0,0,0,0.8)]">
+      <div ref={formRef} className="max-w-2xl mx-auto relative z-10 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-8 sm:p-10 md:p-14 shadow-[0_30px_80px_rgba(0,0,0,0.6)]">
         {/* Header */}
         <div className="text-center mb-12">
           <h2
