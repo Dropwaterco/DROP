@@ -20,6 +20,7 @@ export interface LeadFormConfig {
   submitText: string;
   submitLoadingText: string;
   successTitle: string;
+  accentColor?: string;
   buttonTheme?: 'primary' | 'outline';
   layout?: 'stack' | 'grid';
   selectBgColor?: string;
@@ -29,6 +30,8 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+
+  const accent = config.accentColor || '#00E599';
 
   const handleChange = (name: string, value: string) => {
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -69,18 +72,25 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
 
   if (status === 'success') {
     return (
-      <div className="text-left py-12 px-6 border border-[#00E599]/40 bg-[#00E599]/5 rounded-sm" aria-live="polite">
-        <div className="text-[#00E599] text-xs font-mono font-bold tracking-[0.2em] uppercase mb-2">
+      <div 
+        className="text-left py-12 px-6 border bg-opacity-5 rounded-sm"
+        style={{ borderColor: `${accent}60`, backgroundColor: `${accent}0A` }}
+        aria-live="polite"
+      >
+        <div 
+          className="text-xs font-mono font-bold tracking-[0.2em] uppercase mb-2"
+          style={{ color: accent }}
+        >
           ✓ CONFIRMED
         </div>
         <h3 className="text-white text-2xl font-bold tracking-tight mb-2 uppercase">{config.successTitle}</h3>
-        <p className="text-white/70 font-normal text-sm">{message}</p>
+        <p className="text-white/70 font-normal text-sm leading-relaxed">{message}</p>
       </div>
     );
   }
 
   const formClassName = config.layout === 'grid'
-    ? 'grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-8'
+    ? 'grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-7'
     : 'space-y-7';
 
   return (
@@ -108,7 +118,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
 
         if (field.type === 'select') {
           return (
-            <div key={field.name} className={`${wrapperClass} flex flex-col gap-3 pt-2`}>
+            <div key={field.name} className={`${wrapperClass} flex flex-col gap-3 pt-1`}>
               <label className="text-white/50 text-[11px] font-mono tracking-[0.2em] uppercase">
                 {field.label} {field.required && '*'}
               </label>
@@ -120,11 +130,12 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                       type="button"
                       key={opt}
                       onClick={() => handleChange(field.name, opt)}
-                      className={`px-4 py-2.5 rounded-sm text-xs font-bold tracking-wider uppercase transition-colors duration-150 border cursor-pointer ${
-                        isSelected 
-                          ? 'bg-[#00E599] text-black border-[#00E599]' 
-                          : 'bg-transparent text-white/60 border-white/15 hover:border-white/40 hover:text-white'
-                      }`}
+                      className="px-3.5 py-2 rounded-sm text-xs font-bold tracking-wider uppercase transition-colors duration-150 border cursor-pointer"
+                      style={
+                        isSelected
+                          ? { backgroundColor: accent, color: '#0A0A0A', borderColor: accent }
+                          : { backgroundColor: 'transparent', color: 'rgba(255,255,255,0.6)', borderColor: 'rgba(255,255,255,0.15)' }
+                      }
                     >
                       {opt}
                     </button>
@@ -160,7 +171,10 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                 placeholder={field.placeholder}
                 required={field.required}
                 rows={3}
-                className="w-full py-3 bg-transparent border-b border-white/15 text-white caret-[#00E599] text-sm font-medium focus:outline-none focus:border-[#00E599] transition-colors duration-150 rounded-none resize-none placeholder:text-white/20"
+                className="w-full py-3 bg-transparent border-b border-white/15 text-white text-sm font-medium focus:outline-none transition-colors duration-150 rounded-none resize-none placeholder:text-white/20"
+                style={{ caretColor: accent }}
+                onFocus={(e) => (e.target.style.borderColor = accent)}
+                onBlur={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
                 disabled={status === 'loading'}
               />
             ) : (
@@ -172,7 +186,10 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                 onChange={(e) => handleChange(field.name, e.target.value)}
                 placeholder={field.placeholder}
                 required={field.required}
-                className="w-full py-3 bg-transparent border-b border-white/15 text-white caret-[#00E599] text-sm font-medium focus:outline-none focus:border-[#00E599] transition-colors duration-150 rounded-none placeholder:text-white/20"
+                className="w-full py-3 bg-transparent border-b border-white/15 text-white text-sm font-medium focus:outline-none transition-colors duration-150 rounded-none placeholder:text-white/20"
+                style={{ caretColor: accent }}
+                onFocus={(e) => (e.target.style.borderColor = accent)}
+                onBlur={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
                 disabled={status === 'loading'}
               />
             )}
@@ -190,7 +207,20 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
         <button
           type="submit"
           disabled={status === 'loading'}
-          className="w-full py-4 bg-[#00E599] hover:bg-transparent text-black hover:text-[#00E599] border border-[#00E599] font-bold tracking-[0.2em] text-xs rounded-sm transition-colors duration-150 uppercase cursor-pointer"
+          className="w-full py-4 font-bold tracking-[0.2em] text-xs rounded-sm transition-all duration-150 uppercase cursor-pointer border"
+          style={{
+            backgroundColor: accent,
+            color: '#0A0A0A',
+            borderColor: accent,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = accent;
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = accent;
+            e.currentTarget.style.color = '#0A0A0A';
+          }}
         >
           {status === 'loading' ? config.submitLoadingText : config.submitText}
         </button>
