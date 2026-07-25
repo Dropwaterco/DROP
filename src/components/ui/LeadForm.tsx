@@ -22,7 +22,7 @@ export interface LeadFormConfig {
   successTitle: string;
   buttonTheme?: 'primary' | 'outline';
   layout?: 'stack' | 'grid';
-  selectBgColor?: string; // Kept for backwards compatibility but not used in chip design
+  selectBgColor?: string;
 }
 
 export default function LeadForm({ config }: { config: LeadFormConfig }) {
@@ -55,7 +55,6 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
         setFormData({});
       } else {
         setStatus('error');
-        // Handle validation errors from the unified backend API response format
         if (data.error && data.error.fields) {
           const errors = Object.values(data.error.fields).join(', ');
           setMessage(`${data.error.message}: ${errors}`);
@@ -71,22 +70,22 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
 
   if (status === 'success') {
     return (
-      <div className="text-center py-16 px-8 border border-[#C9A84C]/20 rounded-3xl bg-[#C9A84C]/[0.03]" aria-live="polite">
-        <div className="w-16 h-16 bg-[#C9A84C]/10 border border-[#C9A84C]/30 rounded-full flex items-center justify-center mx-auto mb-6">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <div className="text-center py-16 px-8 border border-[#C9A46A]/30 rounded-xl bg-[#C9A46A]/[0.04] backdrop-blur-md" aria-live="polite">
+        <div className="w-16 h-16 bg-[#C9A46A]/10 border border-[#E8C888]/40 rounded-full flex items-center justify-center mx-auto mb-6 shadow-[0_0_20px_rgba(201,164,106,0.2)]">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E8C888" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
             <polyline points="22 4 12 14.01 9 11.01" />
           </svg>
         </div>
-        <h3 className="text-[#C9A84C] text-2xl font-black tracking-tight mb-3 uppercase">{config.successTitle}</h3>
-        <p className="text-white/60 font-medium text-sm">{message}</p>
+        <h3 className="text-[#E8C888] text-2xl font-serif tracking-wide mb-3 uppercase font-normal">{config.successTitle}</h3>
+        <p className="text-[#F2EFEA]/70 font-light text-sm tracking-wider uppercase">{message}</p>
       </div>
     );
   }
 
   const formClassName = config.layout === 'grid'
-    ? 'grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-8'
-    : 'space-y-8';
+    ? 'grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-10'
+    : 'space-y-10';
 
   return (
     <form onSubmit={handleSubmit} className={formClassName} noValidate={false}>
@@ -116,11 +115,11 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
 
         if (field.type === 'select') {
           return (
-            <div key={field.name} className={`${wrapperClass} flex flex-col gap-4 mt-2`}>
-              <label className="text-white/50 text-xs font-bold tracking-[0.2em] uppercase">
+            <div key={field.name} className={`${wrapperClass} flex flex-col gap-4 mt-4`}>
+              <label className="text-[#C9A46A]/80 text-[11px] font-medium tracking-[0.2em] uppercase">
                 {field.label} {field.required && '*'}
               </label>
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2.5">
                 {field.options?.map((opt) => {
                   const isSelected = formData[field.name] === opt;
                   return (
@@ -128,10 +127,10 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                       type="button"
                       key={opt}
                       onClick={() => handleChange(field.name, opt)}
-                      className={`px-5 py-2.5 rounded-full text-xs font-bold tracking-widest uppercase transition-all duration-300 border focus:outline-none focus:ring-2 focus:ring-[#8b5cf6] ${
+                      className={`px-5 py-2.5 rounded-full text-[11px] font-semibold tracking-[0.18em] uppercase transition-all duration-300 border focus:outline-none focus:ring-1 focus:ring-[#E8C888] cursor-pointer ${
                         isSelected 
-                          ? 'bg-[#8b5cf6] text-white border-[#8b5cf6] shadow-[0_0_15px_rgba(139,92,246,0.3)]' 
-                          : 'bg-transparent text-white/60 border-white/20 hover:border-white/50 hover:text-white'
+                          ? 'bg-gradient-to-r from-[#C9A46A] via-[#E8C888] to-[#C9A46A] text-[#0A0A0B] border-[#E8C888] shadow-[0_0_20px_rgba(201,164,106,0.35)] scale-[1.02]' 
+                          : 'bg-transparent text-[#F2EFEA]/70 border-[#C9A46A]/25 hover:border-[#E8C888]/60 hover:text-[#F2EFEA] hover:bg-[#C9A46A]/[0.05]'
                       }`}
                     >
                       {opt}
@@ -151,13 +150,13 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
         }
 
         return (
-          <div key={field.name} className={`${wrapperClass} relative mt-2`}>
+          <div key={field.name} className={`${wrapperClass} relative mt-4`}>
             <label 
               htmlFor={fieldId} 
-              className={`absolute left-0 transition-all duration-300 pointer-events-none text-xs font-bold tracking-[0.2em] uppercase ${
+              className={`absolute left-0 transition-all duration-300 pointer-events-none text-[11px] font-medium tracking-[0.2em] uppercase ${
                 isFloating 
-                  ? '-top-6 text-[#8b5cf6]' 
-                  : 'top-4 text-white/40'
+                  ? '-top-6 text-[#E8C888]' 
+                  : 'top-4 text-[#C9A46A]/60'
               }`}
             >
               {field.label} {field.required && '*'}
@@ -173,7 +172,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                 onBlur={() => setFocusedField(null)}
                 required={field.required}
                 rows={4}
-                className="w-full py-4 bg-transparent border-b border-white/20 text-white text-sm font-medium focus:outline-none focus:border-[#8b5cf6] transition-all rounded-none resize-none shadow-[0_1px_0_rgba(139,92,246,0)] focus:shadow-[0_1px_0_rgba(139,92,246,1)]"
+                className="w-full py-4 bg-transparent border-b border-[#C9A46A]/20 text-[#F2EFEA] caret-[#F2EFEA] text-sm font-light tracking-wide focus:outline-none focus:border-[#E8C888] transition-all rounded-none resize-none shadow-[0_4px_16px_rgba(0,0,0,0)] focus:shadow-[0_4px_16px_rgba(201,164,106,0.15)]"
                 disabled={status === 'loading'}
               />
             ) : (
@@ -186,7 +185,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                 onFocus={() => setFocusedField(field.name)}
                 onBlur={() => setFocusedField(null)}
                 required={field.required}
-                className="w-full py-4 bg-transparent border-b border-white/20 text-white text-sm font-medium focus:outline-none focus:border-[#8b5cf6] transition-all rounded-none shadow-[0_1px_0_rgba(139,92,246,0)] focus:shadow-[0_1px_0_rgba(139,92,246,1)]"
+                className="w-full py-4 bg-transparent border-b border-[#C9A46A]/20 text-[#F2EFEA] caret-[#F2EFEA] text-sm font-light tracking-wide focus:outline-none focus:border-[#E8C888] transition-all rounded-none shadow-[0_4px_16px_rgba(0,0,0,0)] focus:shadow-[0_4px_16px_rgba(201,164,106,0.15)]"
                 disabled={status === 'loading'}
               />
             )}
@@ -195,35 +194,25 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
       })}
 
       {status === 'error' && (
-        <p className={`${config.layout === 'grid' ? 'md:col-span-2 ' : ''}text-red-400 text-xs font-medium text-center`} role="alert">
+        <p className={`${config.layout === 'grid' ? 'md:col-span-2 ' : ''}text-[#E8C888] text-xs font-medium text-center tracking-wider`} role="alert">
           {message}
         </p>
       )}
 
-      <div className={config.layout === 'grid' ? 'md:col-span-2 pt-4' : 'pt-4'}>
-        {config.buttonTheme === 'outline' ? (
-          <button
-            type="submit"
-            disabled={status === 'loading'}
-            className="w-full py-4 bg-transparent border-2 border-[#8b5cf6] hover:bg-[#8b5cf6]/10 disabled:opacity-50 disabled:cursor-not-allowed text-[#8b5cf6] font-black tracking-[0.2em] text-xs rounded-full transition-all duration-300 uppercase active:scale-95 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#8b5cf6]"
-          >
+      <div className={config.layout === 'grid' ? 'md:col-span-2 pt-6' : 'pt-6'}>
+        <button
+          type="submit"
+          disabled={status === 'loading'}
+          className="group relative w-full py-5 bg-gradient-to-r from-[#C9A46A] via-[#E8C888] to-[#C9A46A] bg-[length:200%_auto] hover:bg-[position:right_center] disabled:opacity-50 disabled:cursor-not-allowed text-[#0A0A0B] font-bold tracking-[0.25em] text-xs rounded-full shadow-[0_0_25px_rgba(201,164,106,0.25)] hover:shadow-[0_0_35px_rgba(232,200,136,0.4)] hover:-translate-y-0.5 transition-all duration-500 uppercase cursor-pointer overflow-hidden flex items-center justify-center focus:outline-none focus:ring-1 focus:ring-[#E8C888]"
+        >
+          <span className="relative z-10">
             {status === 'loading' ? config.submitLoadingText : config.submitText}
-          </button>
-        ) : (
-          <button
-            type="submit"
-            disabled={status === 'loading'}
-            className="group relative w-full py-4 bg-[#8b5cf6] hover:bg-[#7c3aed] disabled:opacity-50 disabled:cursor-not-allowed text-white font-black tracking-[0.2em] text-xs rounded-full shadow-lg shadow-[#8b5cf6]/20 hover:shadow-[#8b5cf6]/40 transition-all duration-300 uppercase active:scale-95 cursor-pointer overflow-hidden flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white"
-          >
-            <span className="relative z-10 transition-transform duration-300 group-hover:-translate-y-8">
-              {status === 'loading' ? config.submitLoadingText : config.submitText}
-            </span>
-            <span className="absolute inset-0 z-10 flex items-center justify-center gap-2 translate-y-8 transition-transform duration-300 group-hover:translate-y-0 text-white">
-              <span className="w-2 h-2 bg-white rounded-full animate-pulse" />
-              <span className="w-2 h-2 bg-white rounded-full animate-pulse delay-75" />
-            </span>
-          </button>
-        )}
+          </span>
+          <span className="absolute inset-0 z-10 flex items-center justify-center gap-2 translate-y-8 transition-transform duration-300 group-hover:translate-y-0 text-[#0A0A0B]">
+            <span className="w-2 h-2 bg-[#0A0A0B] rounded-full animate-pulse" />
+            <span className="w-2 h-2 bg-[#0A0A0B] rounded-full animate-pulse delay-75" />
+          </span>
+        </button>
       </div>
     </form>
   );
