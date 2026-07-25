@@ -296,7 +296,7 @@ export default function VariantShowcase() {
             animation: float-can 6s ease-in-out infinite;
           }
         }
-        .variant-showcase-img-athlete { transform: scale(0.55) !important; }
+        .variant-showcase-img-athlete { transform: scale(0.75) !important; }
         .variant-showcase-img-still { transform: scale(2.4) !important; }
         .variant-showcase-img-other { transform: scale(2.4) !important; }
       `}} />
