@@ -86,7 +86,7 @@ export default function WaitlistSection() {
     <section
       ref={sectionRef}
       id="waitlist"
-      className="relative bg-[#0A0A0A] py-24 sm:py-32 md:py-40 px-6 sm:px-10 md:px-16 text-white border-t border-white/10 overflow-hidden"
+      className="relative bg-[#0A0A0A] py-16 sm:py-24 md:py-40 px-4 sm:px-10 md:px-16 text-white border-t border-white/10 overflow-hidden"
     >
       {/* Subtle Background Structural Grid Pattern */}
       <div 
@@ -98,13 +98,13 @@ export default function WaitlistSection() {
       />
 
       <div className="max-w-6xl mx-auto relative z-10">
-        <div ref={containerRef} className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <div ref={containerRef} className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-center">
           
           {/* Left Column: Headline, Trust Signals & Integrated Can Visual */}
           <div className="lg:col-span-5 flex flex-col items-start pt-2">
             
             {/* Badges & Trust Signals */}
-            <div className="flex flex-wrap items-center gap-3 mb-6">
+            <div className="flex flex-wrap items-center gap-3 mb-4 sm:mb-6">
               <div 
                 className="px-3 py-1 bg-white/5 border text-xs font-mono font-bold tracking-[0.2em] uppercase rounded-sm transition-colors duration-300"
                 style={{ borderColor: `${activeAccent}40`, color: activeAccent }}
@@ -118,18 +118,19 @@ export default function WaitlistSection() {
 
             {/* Headline */}
             <h2
-              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter uppercase leading-[0.92] text-white mb-6 font-sans"
+              className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tighter uppercase leading-[0.92] text-white mb-4 sm:mb-6 font-sans"
               style={{ fontFamily: 'var(--font-heading), sans-serif' }}
             >
               BE FIRST<br />TO TRY IT.
             </h2>
 
-            <p className="text-white/60 text-sm md:text-base font-normal tracking-wide leading-relaxed max-w-md mb-8">
-              Launching 2027. Early access for individuals and direct wholesale distribution for premium commercial venues.
+            <p className="text-white/60 text-base font-normal leading-relaxed max-w-md mb-5 sm:mb-8">
+              <span className="sm:hidden">Launching 2027. Join for early access.</span>
+              <span className="hidden sm:inline">Launching 2027. Early access for individuals and direct wholesale distribution for premium commercial venues.</span>
             </p>
 
             {/* Product Image Integration */}
-            <div className="relative w-full max-w-[260px] h-[220px] mb-8 bg-[#111111]/80 border border-white/10 rounded-sm p-4 flex items-center justify-center overflow-hidden group">
+            <div className="hidden sm:flex relative w-full max-w-[260px] h-[220px] mb-8 bg-[#111111]/80 border border-white/10 rounded-sm p-4 items-center justify-center overflow-hidden group">
               <div 
                 className="absolute inset-0 opacity-10 transition-opacity duration-300 pointer-events-none"
                 style={{ backgroundColor: activeAccent }}
@@ -146,22 +147,22 @@ export default function WaitlistSection() {
             </div>
 
             {/* B2B Trust Signal Footer */}
-            <div className="pt-6 border-t border-white/10 w-full text-white/40 text-xs font-mono tracking-widest uppercase flex items-center gap-2">
+            <div className="pt-4 sm:pt-6 border-t border-white/10 w-full text-white/40 text-[10px] sm:text-xs font-mono tracking-[0.12em] sm:tracking-widest uppercase flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: activeAccent }} />
               TRUSTED BY PREMIUM HOTELS, CAFÉS & STUDIOS
             </div>
           </div>
 
           {/* Right Column: Distinct Elevated Form Surface with Segmented Toggle */}
-          <div className="lg:col-span-7 bg-[#111111] border border-white/15 p-7 sm:p-10 md:p-12 rounded-sm shadow-2xl relative">
+          <div className="lg:col-span-7 bg-[#111111] border border-white/15 p-4 sm:p-10 md:p-12 rounded-sm shadow-2xl relative">
             
             {/* ── Segmented Toggle (Dual Audience Selector) ── */}
-            <div className="mb-8">
-              <div className="grid grid-cols-2 bg-[#0A0A0A] p-1.5 border border-white/10 rounded-sm">
+            <div className="mb-5 sm:mb-8">
+              <div className="grid grid-cols-2 bg-[#0A0A0A] p-1 border border-white/10 rounded-sm">
                 <button
                   type="button"
                   onClick={() => setActiveTab('individual')}
-                  className={`py-3 px-4 text-xs font-bold font-mono tracking-[0.15em] uppercase rounded-sm transition-all duration-200 cursor-pointer ${
+                  className={`min-h-11 py-2 px-2 sm:px-4 text-[10px] sm:text-xs font-bold font-mono tracking-[0.08em] sm:tracking-[0.15em] uppercase rounded-sm transition-all duration-200 cursor-pointer ${
                     isIndividual
                       ? 'bg-[#00E599] text-black shadow-md'
                       : 'text-white/50 hover:text-white bg-transparent'
@@ -172,7 +173,7 @@ export default function WaitlistSection() {
                 <button
                   type="button"
                   onClick={() => setActiveTab('business')}
-                  className={`py-3 px-4 text-xs font-bold font-mono tracking-[0.15em] uppercase rounded-sm transition-all duration-200 cursor-pointer ${
+                  className={`min-h-11 py-2 px-2 sm:px-4 text-[10px] sm:text-xs font-bold font-mono tracking-[0.08em] sm:tracking-[0.15em] uppercase rounded-sm transition-all duration-200 cursor-pointer ${
                     !isIndividual
                       ? 'bg-[#38BDF8] text-black shadow-md'
                       : 'text-white/50 hover:text-white bg-transparent'
@@ -183,14 +184,14 @@ export default function WaitlistSection() {
               </div>
 
               {/* Micro-copy explanation for path */}
-              <div className="mt-3 flex items-center justify-between text-[11px] font-mono text-white/40 px-1">
+              <div className="mt-2 sm:mt-3 flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-white/40 px-1">
                 <span>
                   {isIndividual 
                     ? '• For individuals — get notified at launch'
                     : '• For businesses — wholesale pricing & bulk cases'
                   }
                 </span>
-                <span className="uppercase text-[10px]" style={{ color: activeAccent }}>
+                <span className="hidden sm:inline uppercase text-[10px]" style={{ color: activeAccent }}>
                   {isIndividual ? 'CONSUMER ACCESS' : 'WHOLESALE ACCOUNT'}
                 </span>
               </div>

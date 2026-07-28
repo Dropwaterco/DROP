@@ -90,8 +90,8 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
   }
 
   const formClassName = config.layout === 'grid'
-    ? 'grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-7'
-    : 'space-y-7';
+    ? 'grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 sm:gap-y-7'
+    : 'space-y-5 sm:space-y-7';
 
   return (
     <form onSubmit={handleSubmit} className={formClassName} noValidate={false}>
@@ -118,7 +118,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
 
         if (field.type === 'select') {
           return (
-            <div key={field.name} className={`${wrapperClass} flex flex-col gap-3 pt-1`}>
+            <div key={field.name} className={`${wrapperClass} flex flex-col gap-2 sm:gap-3 pt-1`}>
               <label className="text-white/50 text-[11px] font-mono tracking-[0.2em] uppercase">
                 {field.label} {field.required && '*'}
               </label>
@@ -130,7 +130,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                       type="button"
                       key={opt}
                       onClick={() => handleChange(field.name, opt)}
-                      className="px-3.5 py-2 rounded-sm text-xs font-bold tracking-wider uppercase transition-colors duration-150 border cursor-pointer"
+                      className="min-h-10 px-3 sm:px-3.5 py-2 rounded-sm text-[11px] sm:text-xs font-bold tracking-wider uppercase transition-colors duration-150 border cursor-pointer"
                       style={
                         isSelected
                           ? { backgroundColor: accent, color: '#0A0A0A', borderColor: accent }
@@ -154,7 +154,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
         }
 
         return (
-          <div key={field.name} className={`${wrapperClass} flex flex-col gap-2`}>
+          <div key={field.name} className={`${wrapperClass} flex flex-col gap-1.5 sm:gap-2`}>
             <label 
               htmlFor={fieldId} 
               className="text-white/50 text-[11px] font-mono tracking-[0.2em] uppercase"
@@ -171,7 +171,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                 placeholder={field.placeholder}
                 required={field.required}
                 rows={3}
-                className="w-full py-3 bg-transparent border-b border-white/15 text-white text-sm font-medium focus:outline-none transition-colors duration-150 rounded-none resize-none placeholder:text-white/20"
+                className="w-full py-2.5 sm:py-3 bg-transparent border-b border-white/15 text-white text-base sm:text-sm font-medium focus:outline-none transition-colors duration-150 rounded-none resize-none placeholder:text-white/20"
                 style={{ caretColor: accent }}
                 onFocus={(e) => (e.target.style.borderColor = accent)}
                 onBlur={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
@@ -186,7 +186,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                 onChange={(e) => handleChange(field.name, e.target.value)}
                 placeholder={field.placeholder}
                 required={field.required}
-                className="w-full py-3 bg-transparent border-b border-white/15 text-white text-sm font-medium focus:outline-none transition-colors duration-150 rounded-none placeholder:text-white/20"
+                className="w-full py-2.5 sm:py-3 bg-transparent border-b border-white/15 text-white text-base sm:text-sm font-medium focus:outline-none transition-colors duration-150 rounded-none placeholder:text-white/20"
                 style={{ caretColor: accent }}
                 onFocus={(e) => (e.target.style.borderColor = accent)}
                 onBlur={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
@@ -203,7 +203,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
         </p>
       )}
 
-      <div className={config.layout === 'grid' ? 'md:col-span-2 pt-4' : 'pt-4'}>
+      <div className={config.layout === 'grid' ? 'md:col-span-2 pt-2 sm:pt-4' : 'pt-2 sm:pt-4'}>
         <button
           type="submit"
           disabled={status === 'loading'}

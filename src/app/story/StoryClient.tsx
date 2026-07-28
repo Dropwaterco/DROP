@@ -43,6 +43,12 @@ const MILESTONES: Milestone[] = [
     tag: 'Pre-Launch'
   },
   {
+    year: '2026',
+    title: 'THE VALIDATION',
+    desc: 'Real-world testing across hospitality, fitness and retail refined every detail ahead of the India launch.',
+    tag: 'Pilot Phase'
+  },
+  {
     year: '2027',
     title: 'THE FUTURE',
     desc: 'Beyond hydration. Atmospheric water generation integrated into luxury architecture. The DROP. ecosystem expands into total environmental purity.',
@@ -692,7 +698,18 @@ export default function StoryClient() {
                 </p>
               </div>
 
-              {/* Milestone 5: 2027 */}
+              {/* Milestone 5: 2026 */}
+              <div className="col-span-2 md:col-span-2 lg:col-span-3 row-span-2 bento-card bg-white rounded-[2rem] p-8 flex flex-col justify-between shadow-sm border border-black/5 hover:border-[#007aff]/30">
+                <div>
+                  <span className="text-[#007aff] font-black text-4xl opacity-20 block">2026</span>
+                  <h4 className="text-lg font-bold text-[#1d1d1f] mt-1">THE VALIDATION</h4>
+                </div>
+                <p className="text-[#86868b] text-sm leading-relaxed font-medium">
+                  Hospitality, fitness and retail pilots refined DROP. ahead of the India launch.
+                </p>
+              </div>
+
+              {/* Milestone 6: 2027 */}
               <div className="col-span-2 md:col-span-4 lg:col-span-8 row-span-2 bento-card bg-[#007aff] text-white rounded-[2rem] p-8 flex flex-col justify-between shadow-md border-none group hover:bg-[#006bd6]">
                 <div>
                   <span className="text-white/40 font-black text-4xl block">2027</span>

@@ -6,16 +6,19 @@ const features = [
   {
     num: '01',
     title: 'The Water',
+    mobileBody: 'Crisp filtered water with natural trace minerals. No sugar or synthetic additives.',
     body: 'Sourced with absolute precision. Our water undergoes advanced filtration to ensure a crisp, zero-compromise profile, fortified with natural trace minerals. No sugars, no synthetic additives, just pure cellular hydration.',
   },
   {
     num: '02',
     title: 'The Can',
+    mobileBody: 'Infinitely recyclable aluminium that protects flavour and stays colder for longer.',
     body: 'Aluminium isn\u2019t just an aesthetic choice; it\u2019s a structural and environmental necessity. Infinitely recyclable, it shields the water from light and oxygen degradation while keeping it colder for longer.',
   },
   {
     num: '03',
     title: 'The Experience',
+    mobileBody: 'Premium hydration designed for hotels, cafés, studios and everyday performance.',
     body: 'Engineered to elevate any environment. Whether stocking a premium boutique hotel, served at high-end fitness studios, or fueling your personal best, DROP is the definitive standard for modern hydration.',
   },
 ];
@@ -96,12 +99,13 @@ export default function WhyDropSection() {
           <div className="mt-7 mb-8 h-px w-20 bg-gradient-to-r from-[#C9A84C] to-transparent" />
 
           <p className="text-[#666] text-base md:text-lg max-w-md leading-relaxed font-light">
-            Hydration stripped back to its purest form, engineered for the demands of a high-performance life.
+            <span className="md:hidden">Pure water. Smarter packaging. Better hydration.</span>
+            <span className="hidden md:inline">Hydration stripped back to its purest form, engineered for the demands of a high-performance life.</span>
           </p>
         </div>
 
         {/* ── Feature cards ── */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-3 md:gap-4">
           {features.map((f, i) => (
             <article
               key={f.num}
@@ -116,10 +120,10 @@ export default function WhyDropSection() {
                 }}
               />
 
-              <div className="relative z-10 flex flex-col md:flex-row md:items-start gap-5 md:gap-10 p-7 md:p-10">
+              <div className="relative z-10 flex flex-row md:items-start gap-4 md:gap-10 p-5 md:p-10">
                 {/* Number */}
-                <div className="shrink-0 md:w-24">
-                  <span className="wd-num text-4xl md:text-5xl font-bold tracking-tighter leading-none font-[var(--font-heading)]">
+                <div className="shrink-0 w-10 md:w-24">
+                  <span className="wd-num text-2xl md:text-5xl font-bold tracking-tighter leading-none font-[var(--font-heading)]">
                     {f.num}
                   </span>
                 </div>
@@ -133,7 +137,8 @@ export default function WhyDropSection() {
                     {f.title}
                   </h3>
                   <p className="text-[#666] text-base leading-relaxed max-w-xl font-normal group-hover:text-[#555] transition-colors duration-500">
-                    {f.body}
+                    <span className="md:hidden">{f.mobileBody}</span>
+                    <span className="hidden md:inline">{f.body}</span>
                   </p>
                 </div>
 
@@ -155,7 +160,7 @@ export default function WhyDropSection() {
         </div>
 
         {/* ── Bottom tagline ── */}
-        <div className="mt-16 flex items-center gap-4 opacity-25">
+        <div className="mt-16 hidden md:flex items-center gap-4 opacity-25">
           <div className="h-px flex-1 bg-gradient-to-r from-[#C9A84C]/50 to-transparent" />
           <span className="text-[10px] text-[#9A7B30] tracking-[0.3em] uppercase font-medium whitespace-nowrap">
             Purity · Precision · Performance

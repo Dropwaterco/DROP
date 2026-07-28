@@ -8,22 +8,22 @@ import gsap from 'gsap';
 // CANS defines the display scaling and filter effects for each variant of can.
 const CANS = [
   { 
-    id: 'purple', src: '/assets/new-can-variant-1.png', alt: 'DROP mint functional water can in premium purple aluminium packaging', scale: 2.2,
+    id: 'purple', src: '/assets/new-can-variant-1.png', alt: 'DROP mint functional water can in premium purple aluminium packaging', scale: 2.2, widthScale: 1,
     filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.8))',
     mobileFilter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))'
   },
   { 
-    id: 'red', src: '/assets/clove_can_transparent.png', alt: 'DROP clove water in a premium blood red aluminium can', scale: 2.2,
+    id: 'red', src: '/assets/clove_can_transparent.png', alt: 'DROP clove water in a premium blood red aluminium can', scale: 2.05, widthScale: 1.16,
     filter: 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.5)) drop-shadow(0px 10px 30px rgba(0,0,0,0.15))',
     mobileFilter: 'drop-shadow(0px 5px 15px rgba(0,0,0,0.3))'
   },
   { 
-    id: 'black', src: '/assets/black_can_extracted.png', alt: 'DROP athlete edition functional water in a matte black aluminium can', scale: 1.1,
+    id: 'black', src: '/assets/black_can_extracted.png', alt: 'DROP athlete edition functional water in a matte black aluminium can', scale: 1.1, widthScale: 1,
     filter: 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.5)) drop-shadow(0px 10px 30px rgba(0,0,0,0.15))',
     mobileFilter: 'drop-shadow(0px 5px 15px rgba(0,0,0,0.3))'
   },
   {
-    id: 'silver', src: '/assets/new-can-2.png', alt: 'DROP premium still water in a sleek silver aluminium can', scale: 2.2,
+    id: 'silver', src: '/assets/new-can-2.png', alt: 'DROP premium still water in a sleek silver aluminium can', scale: 2.2, widthScale: 1,
     filter: 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.5)) drop-shadow(0px 10px 30px rgba(0,0,0,0.15))',
     mobileFilter: 'drop-shadow(0px 5px 15px rgba(0,0,0,0.3))'
   }
@@ -177,14 +177,14 @@ export default function AnimatedCan({ activeIndex }: { activeIndex: number }) {
                 className="object-contain object-center transition-transform"
                 style={{ 
                   mixBlendMode: 'normal',
-                  transform: `scale(${can.scale * 0.62})`,
+                  transform: `scale(${can.scale * 0.62}) scaleX(${can.widthScale})`,
                 }}
               />
               {/* Desktop: use CSS media query for larger scale instead of JS state */}
               <style dangerouslySetInnerHTML={{__html: `
                 @media (min-width: 768px) {
                   [data-can-id="${can.id}"] img {
-                    transform: scale(${can.scale}) !important;
+                    transform: scale(${can.scale}) scaleX(${can.widthScale}) !important;
                   }
                   [data-can-id="${can.id}"] {
                     filter: ${can.filter};
