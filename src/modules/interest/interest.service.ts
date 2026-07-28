@@ -1,7 +1,7 @@
 import { waitlistRepository } from '../waitlist/waitlist.repository';
 import { CreateInterestDto, InterestRecord } from './interest.types';
 import { notificationService } from '../notifications/notification.service';
-import { Prisma } from '@prisma/client';
+import { MongoServerError } from 'mongodb';
 
 export class InterestService {
   /**
@@ -37,10 +37,10 @@ export class InterestService {
 
       return { lead, isNew: true };
     } catch (error) {
-      // Concurrency check
+      // Concurrency check when the email index is unique.
       if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === 'P2002'
+        error instanceof MongoServerError &&
+        error.code === 11000
       ) {
         const raceConditionLead = await waitlistRepository.findByEmail(dto.email);
         if (raceConditionLead) {

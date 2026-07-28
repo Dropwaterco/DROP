@@ -13,6 +13,16 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
   }
   
   /* Disable smooth scroll when reduced motion is preferred — avoids fighting native Safari momentum. */
@@ -46,6 +56,11 @@
     background-color: var(--color-canvas);
     color: var(--color-text);
     font-family: var(--font-body), sans-serif;
+    font-size: 1rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     overflow-x: hidden;
     /* Ensure native touch scrolling on iOS */
     -webkit-overflow-scrolling: touch;
@@ -54,6 +69,43 @@
   h1, h2, h3 {
     font-family: var(--font-heading), sans-serif;
     text-transform: uppercase;
-    line-height: 0.9;
+    line-height: 0.95;
+    text-wrap: balance;
+  }
+
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  @media (max-width: 767px) {
+    main,
+    section,
+    header,
+    footer,
+    nav {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    p {
+      font-size: max(1rem, 16px);
+      line-height: 1.6;
+    }
+
+    button,
+    [role="button"] {
+      touch-action: manipulation;
+    }
   }
 }

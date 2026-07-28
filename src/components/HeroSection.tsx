@@ -35,8 +35,8 @@ export default function HeroSection() {
     // Headline subtly settles into place
     tl.fromTo(
       headlineRef.current,
-      { y: 50, opacity: 0, scale: 1.05 },
-      { y: 0, opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out', delay: 0.2 }
+      { y: 32, opacity: 0 },
+      { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.15 }
     );
 
     // Tagline fades in
@@ -60,7 +60,7 @@ export default function HeroSection() {
   return (
     <section
       id="hero"
-      className="relative w-full min-h-[100svh] overflow-hidden transition-colors duration-1000 flex items-center"
+      className="relative isolate w-full min-h-[100svh] overflow-hidden transition-colors duration-1000 flex flex-col md:block"
       style={{ backgroundColor: currentTheme.bg, clipPath: 'inset(0)' }}
     >
       <HeroNavbar activeIndex={activeIndex} />
@@ -68,7 +68,7 @@ export default function HeroSection() {
 
       {/* Right Side/Bottom Accent Background (Curve Split) */}
       <div
-        className="absolute right-0 bottom-0 md:top-0 w-full md:w-[35%] lg:w-[30%] h-[38%] md:h-full rounded-t-[42px] md:rounded-t-none md:rounded-l-[100px] sm:rounded-l-[150px] transition-colors duration-1000 z-0"
+        className="absolute right-0 bottom-0 md:top-0 w-full md:w-[35%] lg:w-[30%] h-[42%] md:h-full rounded-t-[42px] md:rounded-t-none md:rounded-l-[100px] transition-colors duration-1000 z-0"
         style={{ backgroundColor: currentTheme.accentBg }}
       >
         {/* Semi-circle shape on the line */}
@@ -94,19 +94,19 @@ export default function HeroSection() {
       </div>
 
       {/* Content Container (Centered & spaced vertically on mobile to prevent overlapping the absolute can) */}
-      <div className="relative z-[50] w-full md:w-[45%] px-5 sm:px-8 md:pl-16 lg:pl-24 flex flex-col items-center md:items-start justify-between md:justify-center gap-4 min-h-[86svh] md:min-h-0 md:h-auto pt-24 pb-8 sm:pb-12 md:py-0 text-center md:text-left mx-auto md:mx-0 pointer-events-auto">
+      <div className="relative z-[50] w-full max-w-full md:w-[48%] px-5 sm:px-8 md:pl-16 lg:pl-24 flex flex-col items-center md:items-start gap-5 pt-28 pb-8 md:py-0 md:absolute md:inset-y-0 md:left-0 md:justify-center text-center md:text-left pointer-events-auto">
 
         {/* Headline */}
         <h1
           ref={headlineRef}
-          className="opacity-0 transition-colors duration-1000 mb-8 order-1"
+          className="opacity-0 transition-colors duration-1000 mb-2 order-1"
           style={{
             fontFamily: '"Anton", "Bebas Neue", "Druk Condensed", Impact, sans-serif',
-            fontSize: 'clamp(2.5rem, 9vw, 6rem)',
+            fontSize: 'clamp(2rem, 8.5vw, 4.5rem)',
             color: currentTheme.text,
             fontWeight: 900,
-            letterSpacing: '0.02em',
-            lineHeight: 0.95,
+            letterSpacing: 'clamp(0.01em, 0.4vw, 0.035em)',
+            lineHeight: 1,
             textShadow: '0 10px 30px rgba(0,0,0,0.3)'
           }}
         >
@@ -116,13 +116,13 @@ export default function HeroSection() {
         </h1>
 
         {/* Interactive Flavor Selectors */}
-        <div className="flex gap-4 items-center justify-center md:justify-start mb-4 z-[60] relative pointer-events-auto flavor-selector-btn order-3 md:order-2 mt-4 md:mt-0">
+        <div className="flex gap-5 items-center justify-center md:justify-start mb-1 z-[60] relative pointer-events-auto flavor-selector-btn order-3 md:order-2 mt-2 md:mt-0">
           {THEMES.map((theme, idx) => (
             <button
               key={theme.id}
               onClick={() => handleFlavorSelect(idx)}
               aria-label={`Select ${theme.name}`}
-              className={`w-6 h-6 rounded-full border-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent ${activeIndex === idx ? 'scale-125 border-white' : 'border-transparent hover:scale-110'}`}
+              className={`w-11 h-11 rounded-full border-[10px] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent ${activeIndex === idx ? 'border-white/70' : 'border-transparent hover:border-white/30'}`}
               style={{ 
                 backgroundColor: theme.dotColor,
                 boxShadow: activeIndex === idx ? `0 0 15px ${theme.dotColor}` : 'none'
@@ -132,11 +132,11 @@ export default function HeroSection() {
         </div>
 
         {/* Buttons and Pricing Anchors */}
-        <div className="mt-4 md:mt-8 flex flex-col items-center md:items-start gap-4 w-full relative z-[60] pointer-events-auto order-2 md:order-3">
+        <div className="mt-1 md:mt-6 flex flex-col items-center md:items-start gap-4 w-full relative z-[60] pointer-events-auto order-2 md:order-3">
           <div className="flex flex-col sm:flex-row gap-4 w-full justify-center md:justify-start items-center">
             <a
               href="#waitlist"
-              className="px-8 sm:px-10 py-4 w-full max-w-[20rem] sm:w-auto sm:max-w-none font-bold tracking-[0.16em] sm:tracking-[0.2em] text-xs rounded-full shadow-xl hover:shadow-2xl hover:-translate-y-1 active:translate-y-0 active:scale-95 transition-colors duration-300 ring-1 ring-white/20 text-center block focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent"
+              className="px-8 sm:px-10 min-h-12 py-3.5 w-full max-w-[22rem] sm:w-auto sm:max-w-none font-bold tracking-[0.12em] sm:tracking-[0.18em] text-xs rounded-full shadow-xl hover:shadow-2xl md:hover:-translate-y-1 active:translate-y-0 transition-colors duration-300 ring-1 ring-white/20 text-center flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent"
               style={{
                 backgroundColor: currentTheme.id === 'red' ? '#fca5a5' : currentTheme.id === 'purple' ? '#E9D5FF' : '#FFFFFF',
                 color: currentTheme.id === 'red' ? '#450a0a' : currentTheme.id === 'purple' ? '#1A0B2E' : '#0A0A0A'
@@ -147,7 +147,7 @@ export default function HeroSection() {
             
             <a
               href="#products"
-              className="px-8 sm:px-10 py-4 w-full max-w-[20rem] sm:w-auto sm:max-w-none bg-transparent border border-white/20 font-bold tracking-[0.16em] sm:tracking-[0.2em] text-xs rounded-full hover:bg-white/10 hover:border-white/40 transition-colors duration-300 text-center flex items-center justify-center hover:-translate-y-1 active:translate-y-0 active:scale-95 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent"
+              className="px-8 sm:px-10 min-h-12 py-3.5 w-full max-w-[22rem] sm:w-auto sm:max-w-none bg-transparent border border-white/20 font-bold tracking-[0.12em] sm:tracking-[0.18em] text-xs rounded-full hover:bg-white/10 hover:border-white/40 transition-colors duration-300 text-center flex items-center justify-center md:hover:-translate-y-1 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-transparent"
               style={{ color: currentTheme.text }}
             >
               EXPLORE FLAVORS
@@ -158,7 +158,7 @@ export default function HeroSection() {
         {/* Sleek Footnote */}
         <div
           ref={taglineRef}
-          className="mt-4 md:mt-8 font-semibold tracking-[0.16em] sm:tracking-[0.24em] md:tracking-[0.3em] text-[10px] md:text-xs opacity-0 transition-colors duration-1000 flex flex-wrap items-center justify-center md:justify-start gap-x-4 gap-y-2 sm:gap-x-6 uppercase max-w-[19rem] sm:max-w-none pointer-events-none order-4"
+          className="mt-2 md:mt-7 font-semibold tracking-[0.1em] sm:tracking-[0.18em] md:tracking-[0.25em] text-xs opacity-0 transition-colors duration-1000 flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-2 sm:gap-x-5 uppercase max-w-[22rem] sm:max-w-none pointer-events-none order-4"
           style={{ color: currentTheme.text }}
         >
           <span className="opacity-70">330ML & 500ML</span>

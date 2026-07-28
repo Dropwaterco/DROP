@@ -68,15 +68,15 @@ export default function WhyDropSection() {
       />
 
       {/* ── Content ── */}
-      <div className="max-w-5xl mx-auto px-6 md:px-12 py-28 md:py-40 relative z-10">
+      <div className="max-w-5xl w-full mx-auto px-5 sm:px-6 md:px-12 py-20 sm:py-28 md:py-40 relative z-10">
 
         {/* ── Header ── */}
-        <div className="mb-20 md:mb-28">
+        <div className="mb-14 sm:mb-20 md:mb-28">
           <span className="inline-block text-[#C9A84C] text-[11px] font-semibold tracking-[0.25em] uppercase mb-5">
             Why Choose Us
           </span>
 
-          <h2 className="font-[var(--font-heading)] text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight uppercase leading-[0.9] text-[#111]">
+          <h2 className="font-[var(--font-heading)] text-[clamp(2.75rem,13vw,6rem)] font-bold tracking-[-0.01em] uppercase leading-[0.95] text-[#111]">
             Why{' '}
             <span
               style={{
@@ -132,7 +132,7 @@ export default function WhyDropSection() {
                   <h3 className="text-xl md:text-2xl font-bold tracking-tight uppercase text-[#111] mb-2 font-[var(--font-heading)] group-hover:text-[#9A7B30] transition-colors duration-500">
                     {f.title}
                   </h3>
-                  <p className="text-[#777] text-sm md:text-[15px] leading-relaxed max-w-xl font-light group-hover:text-[#555] transition-colors duration-500">
+                  <p className="text-[#666] text-base leading-relaxed max-w-xl font-normal group-hover:text-[#555] transition-colors duration-500">
                     {f.body}
                   </p>
                 </div>

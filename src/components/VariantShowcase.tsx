@@ -112,7 +112,7 @@ export default function VariantShowcase() {
       case 'mint':
         return { ...base, fontFamily: 'var(--font-heading)', textTransform: 'uppercase' as const, letterSpacing: '0.02em', fontWeight: 600 };
       case 'athlete':
-        return { ...base, fontFamily: '"Anton", "Bebas Neue", "Druk Condensed", Impact, sans-serif', textTransform: 'uppercase' as const, letterSpacing: '-0.02em', fontWeight: 900, transform: 'scaleY(1.1)' };
+        return { ...base, fontFamily: 'var(--font-heading)', textTransform: 'uppercase' as const, letterSpacing: '0.01em', fontWeight: 800 };
       case 'clove':
         return { ...base, fontFamily: 'var(--font-serif)', textTransform: 'none' as const, letterSpacing: '0', fontWeight: 400, fontStyle: 'italic' };
       case 'still':
@@ -126,7 +126,7 @@ export default function VariantShowcase() {
   const shouldFloat = isVisible && !isMobile && !prefersReducedMotion;
 
   return (
-    <section ref={sectionRef} id="products" className="relative w-full text-white font-sans min-h-screen flex overflow-hidden bg-[#050505]">
+    <section ref={sectionRef} id="products" className="relative w-full max-w-full text-white font-sans min-h-screen flex overflow-hidden bg-[#050505]">
       {/* Background Gradient Layers */}
       {KEYS.map((key) => (
         <div
@@ -142,7 +142,7 @@ export default function VariantShowcase() {
       <div className="max-w-[1600px] w-full mx-auto flex flex-col md:flex-row relative z-10 overflow-hidden">
         
         {/* Left Sticky Tab Navigation (aside) */}
-        <aside className="w-full md:w-1/3 lg:w-1/4 pt-24 md:pt-40 px-6 md:px-12 lg:px-16 flex flex-col md:border-r border-white/5 md:sticky md:top-0 h-auto md:h-screen z-20">
+        <aside className="w-full md:w-1/3 lg:w-1/4 pt-20 md:pt-40 px-5 sm:px-6 md:px-12 lg:px-16 flex flex-col md:border-r border-white/5 md:sticky md:top-0 h-auto md:h-screen z-20">
           <h2 className="text-xs font-bold tracking-[0.4em] uppercase text-white/40 mb-10 pl-4">
             The Collection
           </h2>
@@ -184,7 +184,7 @@ export default function VariantShowcase() {
         </aside>
 
         {/* Right Dynamic Viewport (main) */}
-        <main className="w-full md:w-2/3 lg:w-3/4 flex flex-col-reverse md:flex-row items-center justify-between px-6 md:px-12 lg:px-24 py-12 md:py-32 relative z-10 overflow-hidden">
+        <main className="w-full md:w-2/3 lg:w-3/4 flex flex-col-reverse md:flex-row items-center justify-between px-5 sm:px-6 md:px-12 lg:px-24 py-16 md:py-32 relative z-10 overflow-hidden">
           
           {/* Text Content */}
           <div className="w-full md:w-1/2 flex flex-col justify-center z-20 mt-16 md:mt-0">
@@ -197,7 +197,7 @@ export default function VariantShowcase() {
                 transition={{ duration: 0.5, ease: "easeOut" }}
               >
                 <h2 
-                  className="text-5xl md:text-6xl lg:text-[6rem] mb-6 leading-[1.15] md:leading-[1.1] origin-left py-1" 
+                  className="text-[clamp(2.5rem,12vw,6rem)] mb-6 leading-[1.08] origin-left py-1"
                   style={getTitleStyles(activeKey)}
                 >
                   {activeProduct.title}

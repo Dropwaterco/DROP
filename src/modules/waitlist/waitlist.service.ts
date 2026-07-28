@@ -1,7 +1,7 @@
 import { waitlistRepository } from './waitlist.repository';
 import { CreateLeadDto, ConsumerLeadRecord } from './waitlist.types';
 import { notificationService } from '../notifications/notification.service';
-import { Prisma } from '@prisma/client';
+import { MongoServerError } from 'mongodb';
 
 export class WaitlistService {
   /**
@@ -31,10 +31,10 @@ export class WaitlistService {
 
       return { lead, isNew: true };
     } catch (error) {
-      // Handle concurrent race conditions (unique constraint violation code P2002)
+      // Handle concurrent race conditions when the email index is unique.
       if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === 'P2002'
+        error instanceof MongoServerError &&
+        error.code === 11000
       ) {
         const raceConditionLead = await waitlistRepository.findByEmail(dto.email);
         if (raceConditionLead) {
