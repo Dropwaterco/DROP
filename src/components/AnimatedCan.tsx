@@ -13,7 +13,7 @@ const CANS = [
     mobileFilter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))'
   },
   { 
-    id: 'red', src: '/assets/clove_can_transparent.png', alt: 'DROP clove water in a premium blood red aluminium can', scale: 2.05, widthScale: 1.16,
+    id: 'red', src: '/assets/clove_can_transparent_fixed.png', alt: 'DROP clove water in a premium blood red aluminium can', scale: 2.05, widthScale: 1.16,
     filter: 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.5)) drop-shadow(0px 10px 30px rgba(0,0,0,0.15))',
     mobileFilter: 'drop-shadow(0px 5px 15px rgba(0,0,0,0.3))'
   },

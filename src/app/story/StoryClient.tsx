@@ -6,7 +6,7 @@ import Link from 'next/link';
 import HeroNavbar from '@/components/HeroNavbar';
 import Footer from '@/components/Footer';
 
-type ThemePreset = 'obsidian' | 'horizon' | 'bento';
+type ThemePreset = 'obsidian' | 'horizon' | 'bento' | 'editorial';
 
 interface Milestone {
   year: string;
@@ -236,7 +236,7 @@ export default function StoryClient() {
     const uResolutionLocation = gl.getUniformLocation(program, 'u_resolution');
     const uMouseLocation = gl.getUniformLocation(program, 'u_mouse');
 
-    let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+    const mouse = { x: canvas.width / 2, y: canvas.height / 2 };
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       if (rect.width && rect.height) {
@@ -341,42 +341,48 @@ export default function StoryClient() {
   };
 
   return (
-    <div className={`w-full relative min-h-screen font-sans antialiased overflow-hidden ${preset === 'bento' ? 'bg-[#f5f5f7] text-[#1d1d1f]' : 'bg-black text-white'}`}>
+    <div className={`w-full relative min-h-screen font-sans antialiased overflow-hidden ${preset === 'bento' ? 'bg-[#f5f5f7] text-[#1d1d1f]' : preset === 'editorial' ? 'bg-[#D9FF43] text-[#101010]' : 'bg-black text-white'}`}>
       
       {/* Floating WebGL background */}
       <canvas 
         ref={canvasRef} 
-        className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-60"
+        className={`fixed inset-0 w-full h-full pointer-events-none z-0 ${preset === 'editorial' ? 'opacity-0' : 'opacity-60'}`}
         style={{ mixBlendMode: preset === 'bento' ? 'normal' : 'screen' }}
       />
 
       {/* HeroNavbar text switches theme style correctly */}
-      <HeroNavbar activeIndex={preset === 'bento' ? 4 : 1} />
+      <HeroNavbar activeIndex={preset === 'bento' || preset === 'editorial' ? 4 : 1} />
 
       {/* Floating Interactive Design Mode Switcher */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] bg-black/60 backdrop-blur-xl border border-white/10 rounded-full p-1.5 flex gap-1 shadow-2xl">
+      <div className="fixed bottom-4 left-1/2 z-[100] flex w-[calc(100%-1.5rem)] max-w-max -translate-x-1/2 gap-1 overflow-x-auto rounded-full border border-white/10 bg-black/70 p-1.5 shadow-2xl backdrop-blur-xl sm:bottom-6">
         <button
           onClick={() => setPreset('obsidian')}
-          className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'obsidian' ? 'bg-[#C9A84C] text-black shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+          className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[9px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'obsidian' ? 'bg-[#C9A84C] text-black shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
         >
           ✦ Obsidian Core
         </button>
         <button
           onClick={() => setPreset('horizon')}
-          className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'horizon' ? 'bg-[#93C5FD] text-black shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+          className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[9px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'horizon' ? 'bg-[#93C5FD] text-black shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
         >
           ✦ Liquid Horizon
         </button>
         <button
           onClick={() => setPreset('bento')}
-          className={`px-4 py-2 rounded-full text-[10px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'bento' ? 'bg-[#007aff] text-white shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+          className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[9px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'bento' ? 'bg-[#007aff] text-white shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
         >
           ✦ Tech Bento
+        </button>
+        <button
+          onClick={() => setPreset('editorial')}
+          className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[9px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'editorial' ? 'bg-[#D9FF43] text-black shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+        >
+          ✦ Raw Editorial
         </button>
       </div>
 
       {/* Inline styles for custom preset rendering */}
-      {stylePresets(preset)}
+      {stylePresets()}
 
       {/* THEME 1: OBSIDIAN CORE */}
       {preset === 'obsidian' && (
@@ -530,7 +536,7 @@ export default function StoryClient() {
               </section>
 
               {/* Milestones Horizontal Loop */}
-              {MILESTONES.map((m, idx) => (
+              {MILESTONES.map((m) => (
                 <div 
                   key={m.year} 
                   className="w-[85vw] md:w-[450px] mr-[15vw] flex-shrink-0 relative group"
@@ -644,7 +650,7 @@ export default function StoryClient() {
                   <h4 className="text-lg font-bold text-[#1d1d1f] mt-1">THE SPARK</h4>
                 </div>
                 <p className="text-[#86868b] text-sm leading-relaxed font-medium">
-                  The realization that water shouldn\'t just be consumed—it should be experienced. A clinical hydration vessel concept.
+                  The realization that water shouldn&apos;t just be consumed—it should be experienced. A clinical hydration vessel concept.
                 </p>
               </div>
 
@@ -740,16 +746,74 @@ export default function StoryClient() {
         </div>
       )}
 
+      {/* THEME 4: RAW EDITORIAL */}
+      {preset === 'editorial' && (
+        <div className="relative z-10 min-h-screen bg-[#D9FF43] pt-28 text-[#101010]">
+          <main className="mx-auto max-w-[1600px] px-5 pb-32 sm:px-8 md:px-14">
+            <header className="grid gap-8 border-y-2 border-black py-8 md:grid-cols-[1fr_auto] md:items-end md:py-12">
+              <div>
+                <span className="mb-5 block text-[10px] font-black uppercase tracking-[0.35em]">DROP. archive / Volume 01</span>
+                <h1 className="text-[clamp(4.6rem,15vw,13rem)] font-black uppercase leading-[0.72] tracking-[-0.055em]">
+                  The
+                  <br />
+                  Water
+                  <br />
+                  Report.
+                </h1>
+              </div>
+              <p className="max-w-xs border-l-2 border-black pl-5 text-sm font-bold uppercase leading-relaxed tracking-[0.12em]">
+                Six decisions that turned a simple need into a new standard for Indian hydration.
+              </p>
+            </header>
+
+            <div className="grid border-b-2 border-black md:grid-cols-2">
+              {MILESTONES.map((milestone, index) => (
+                <article
+                  key={milestone.year}
+                  className={`group min-h-[360px] border-black p-6 transition-colors duration-300 hover:bg-black hover:text-[#D9FF43] md:p-10 ${
+                    index % 2 === 0 ? 'md:border-r-2' : ''
+                  } ${index < MILESTONES.length - 2 ? 'border-b-2' : ''}`}
+                >
+                  <div className="mb-16 flex items-start justify-between">
+                    <span className="text-xs font-black tracking-[0.24em]">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="font-[var(--font-heading)] text-6xl font-black leading-none tracking-tighter md:text-8xl">
+                      {milestone.year}
+                    </span>
+                  </div>
+                  <span className="mb-3 block text-[10px] font-black uppercase tracking-[0.3em] opacity-55">{milestone.tag}</span>
+                  <h2 className="mb-4 text-3xl font-black uppercase tracking-tight md:text-5xl">{milestone.title}</h2>
+                  <p className="max-w-lg text-sm font-semibold leading-relaxed opacity-65 md:text-base">{milestone.desc}</p>
+                </article>
+              ))}
+            </div>
+
+            <div className="flex flex-col gap-8 py-14 md:flex-row md:items-end md:justify-between">
+              <p className="font-[var(--font-heading)] text-5xl font-black uppercase leading-[0.85] tracking-tight md:text-8xl">
+                Next chapter:
+                <br />
+                2027.
+              </p>
+              <Link
+                href="/#waitlist"
+                className="inline-flex w-max bg-black px-9 py-5 text-xs font-black uppercase tracking-[0.22em] text-[#D9FF43] transition-transform hover:-translate-y-1 active:translate-y-0"
+              >
+                Join the first DROP.
+              </Link>
+            </div>
+          </main>
+        </div>
+      )}
+
       {/* Global Story Page Footer */}
       <div className={preset === 'bento' ? 'bg-[#f5f5f7]' : 'bg-black'}>
-        <Footer theme={preset === 'bento' ? 'olive' : 'default'} />
+        <Footer theme={preset === 'bento' || preset === 'editorial' ? 'olive' : 'default'} />
       </div>
 
     </div>
   );
 }
 
-function stylePresets(preset: ThemePreset) {
+function stylePresets() {
   return (
     <style dangerouslySetInnerHTML={{__html: `
       /* Common WebGL background animations */

@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 const CANS = [
   { id: 'purple', name: 'Mint Infusion', desc: 'Soothes digestion and naturally cools the body. No artificial cooling agents.', image: '/assets/new-can-variant-1.png', color: '#E9D5FF' },
   { id: 'black', name: 'Athlete Edition', desc: 'Enhanced with trace minerals for rapid cellular hydration and recovery.', image: '/assets/black_can_extracted.png', color: '#FFFFFF' },
-  { id: 'gold', name: 'Clove Infusion', desc: 'A subtle, earthy warmth that aids immunity and restores natural vitality.', image: '/assets/clove_can_transparent.png', color: '#C9A84C' },
+  { id: 'gold', name: 'Clove Infusion', desc: 'A subtle, earthy warmth that aids immunity and restores natural vitality.', image: '/assets/clove_can_transparent_fixed.png', color: '#C9A84C' },
   { id: 'silver', name: 'Sparkling', desc: 'Crisp, perfectly carbonated effervescence for a sharper mouthfeel.', image: '/assets/new-can-2.png', color: '#E2E8F0' },
 ];
 

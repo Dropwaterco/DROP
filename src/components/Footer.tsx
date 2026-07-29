@@ -78,8 +78,8 @@ export default function Footer({ theme = "default" }: FooterProps) {
               <li className="flex items-start space-x-3 p-1 -ml-1">
                 <MapPin size={16} stroke={iconColor} className="shrink-0 mt-0.5" />
                 <span className={descText}>
-                  Bandra West, Mumbai<br />
-                  MH 400050, India
+                  Vashi, Juhugaon<br />
+                  Navi Mumbai 400703, India
                 </span>
               </li>
               <li className="flex items-center space-x-3 min-w-0">

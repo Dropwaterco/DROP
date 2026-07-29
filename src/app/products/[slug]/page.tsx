@@ -95,7 +95,7 @@ const PRODUCT_DATA: Record<string, ProductDetails> = {
     minerals: 'Calcium, Magnesium, Zinc',
     intendedUse: 'Post-meal digestion, daily wellness booster, vitality enhancement, and premium hydration.',
     launch: 'Launching in India in 2027. Join the early-access list.',
-    img: '/assets/clove_can_transparent.png',
+    img: '/assets/clove_can_transparent_fixed.png',
     altText: 'DROP clove water in a premium blood red aluminium can',
     accentColor: '#EF4444',
     faqs: [

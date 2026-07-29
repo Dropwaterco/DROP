@@ -78,7 +78,7 @@ export default function FeatureSplitSection() {
                     alt={item.alt} 
                     fill 
                     sizes="(max-width: 1024px) 40vw, 25vw"
-                    className="object-cover" 
+                    className="object-contain p-2 lg:p-3"
                     loading="lazy"
                   />
                 </div>
@@ -103,7 +103,7 @@ export default function FeatureSplitSection() {
                     alt={item.alt} 
                     fill 
                     sizes="(max-width: 1024px) 40vw, 25vw"
-                    className="object-cover" 
+                    className="object-contain p-2 lg:p-3"
                     loading="lazy"
                   />
                 </div>
@@ -129,7 +129,7 @@ export default function FeatureSplitSection() {
           </h2>
           
           <p className="text-base md:text-lg font-medium text-[#111111]/70 leading-relaxed mb-12">
-            Our purity comes from the power of pristine sources. We've created a collection of premium functional waters for you, without a single compromise.
+            Our purity comes from the power of pristine sources. We&apos;ve created a collection of premium functional waters for you, without a single compromise.
           </p>
 
           {/* Feature Grid */}

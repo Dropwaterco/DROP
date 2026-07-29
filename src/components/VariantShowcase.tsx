@@ -43,7 +43,7 @@ export const collectionData: Record<'still' | 'mint' | 'athlete' | 'clove', Coll
     desc: 'Infused with aromatic clove extracts to restore natural vitality.',
     benefits: 'Vitality & Digestion',
     format: '330ML / 500ML CAN',
-    img: '/assets/clove_can_transparent.png',
+    img: '/assets/clove_can_transparent_fixed.png',
     altText: 'DROP clove water in a premium blood red aluminium can',
   },
 };
@@ -56,11 +56,6 @@ export default function VariantShowcase() {
   const activeProduct = collectionData[activeKey];
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-  }, []);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -123,7 +118,6 @@ export default function VariantShowcase() {
 
   const accentColor = getAccentColor(activeKey);
   const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  const shouldFloat = isVisible && !isMobile && !prefersReducedMotion;
 
   return (
     <section ref={sectionRef} id="products" className="relative w-full max-w-full text-white font-sans min-h-screen flex overflow-hidden bg-[#050505]">
