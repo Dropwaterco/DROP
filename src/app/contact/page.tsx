@@ -5,8 +5,26 @@ import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'For Business | DROP Water',
+  title: 'For Business',
   description: 'Offer your guests a premium hydration experience. Partner with DROP for luxury canned water in your café, gym, or hotel.',
+  alternates: {
+    canonical: 'https://www.dropwater.in/contact',
+  },
+  openGraph: {
+    title: 'Partner With DROP. | For Business',
+    description: 'Partner with DROP. to bring premium recyclable canned water to your café, gym, hotel, or hospitality venue.',
+    siteName: 'DROP.',
+    locale: 'en_IN',
+    url: 'https://www.dropwater.in/contact',
+    type: 'website',
+    images: ['/assets/new-can-2.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Partner With DROP. | For Business',
+    description: 'Partner with DROP. to bring premium recyclable canned water to your café, gym, hotel, or hospitality venue.',
+    images: ['/assets/new-can-2.png'],
+  },
 };
 
 export default function ContactPage() {

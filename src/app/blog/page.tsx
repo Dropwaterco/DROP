@@ -3,13 +3,28 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import HeroNavbar from '@/components/HeroNavbar';
 import Footer from '@/components/Footer';
-import { ArrowRight, BookOpen, Calendar, Clock } from 'lucide-react';
+import { ArrowRight, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Blog & Hydration Guide | DROP. Canned Water',
+  title: 'Hydration & Sustainability Guides',
   description: 'Explore insights on sustainable packaging, aluminium recycling in India, functional water benefits, and premium hydration guides.',
   alternates: {
     canonical: '/blog',
+  },
+  openGraph: {
+    title: 'The DROP. Journal | Hydration & Sustainability Guides',
+    description: 'Explore insights on sustainable packaging, aluminium recycling in India, functional water benefits, and premium hydration guides.',
+    siteName: 'DROP.',
+    locale: 'en_IN',
+    url: 'https://www.dropwater.in/blog',
+    type: 'website',
+    images: ['/assets/new-can-2.png'],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'The DROP. Journal | Hydration & Sustainability Guides',
+    description: 'Explore insights on sustainable packaging, aluminium recycling in India, functional water benefits, and premium hydration guides.',
+    images: ['/assets/new-can-2.png'],
   },
 };
 

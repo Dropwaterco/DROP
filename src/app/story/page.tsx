@@ -1,7 +1,7 @@
 import StoryClient from './StoryClient';
 
 export const metadata = {
-  title: 'Our Story | DROP.',
+  title: { absolute: 'Our Story | DROP.' },
   description: 'Explore DROP. still water, mint water, clove water and athlete hydration in premium recyclable aluminium cans.',
   alternates: {
     canonical: '/story',
@@ -9,6 +9,8 @@ export const metadata = {
   openGraph: {
     title: 'Our Story | DROP.',
     description: 'Explore DROP. still water, mint water, clove water and athlete hydration in premium recyclable aluminium cans.',
+    siteName: 'DROP.',
+    locale: 'en_IN',
     url: 'https://www.dropwater.in/story',
     type: 'website',
   },

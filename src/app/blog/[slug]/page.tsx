@@ -12,7 +12,9 @@ interface Article {
   metaDescription: string;
   category: string;
   date: string;
+  datePublished: string;
   readTime: string;
+  image: string;
   content: React.ReactNode;
 }
 
@@ -22,7 +24,9 @@ const ARTICLES_DATA: Record<string, Article> = {
     metaDescription: 'Explore why infinitely recyclable aluminium is replacing single-use plastic, keeping water colder and protecting oceans from microplastics.',
     category: 'Sustainability',
     date: 'July 18, 2026',
+    datePublished: '2026-07-18',
     readTime: '4 min read',
+    image: '/assets/Add_some_details_to_the_202606301348.jpeg',
     content: (
       <div className="space-y-6 text-white/70 leading-relaxed text-base sm:text-lg">
         <p>
@@ -74,7 +78,9 @@ const ARTICLES_DATA: Record<string, Article> = {
     metaDescription: 'Learn about the science of functional water, mineral infusions, electrolytes, and how it helps elevate training, recovery, and wellness.',
     category: 'Science & Health',
     date: 'July 15, 2026',
+    datePublished: '2026-07-15',
     readTime: '5 min read',
+    image: '/assets/new-can-variant-1.png',
     content: (
       <div className="space-y-6 text-white/70 leading-relaxed text-base sm:text-lg">
         <p>
@@ -116,7 +122,9 @@ const ARTICLES_DATA: Record<string, Article> = {
     metaDescription: 'Uncover the traditional wellness and digestive benefits of organic clove-infused water, from oral care to active antioxidant support.',
     category: 'Wellness',
     date: 'July 12, 2026',
+    datePublished: '2026-07-12',
     readTime: '3 min read',
+    image: '/assets/clove_can.jpeg',
     content: (
       <div className="space-y-6 text-white/70 leading-relaxed text-base sm:text-lg">
         <p>
@@ -166,7 +174,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!article) return {};
 
   return {
-    title: `${article.title} | DROP.`,
+    title: article.title,
     description: article.metaDescription,
     alternates: {
       canonical: `/blog/${slug}`,
@@ -175,6 +183,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${article.title} | DROP.`,
       description: article.metaDescription,
       type: 'article',
+      siteName: 'DROP.',
+      locale: 'en_IN',
+      url: `https://www.dropwater.in/blog/${slug}`,
+      publishedTime: article.datePublished,
+      authors: ['DROP. Editorial Team'],
+      images: [article.image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${article.title} | DROP.`,
+      description: article.metaDescription,
+      images: [article.image],
     },
   };
 }
@@ -187,8 +207,41 @@ export default async function ArticlePage({ params }: Props) {
     notFound();
   }
 
+  const articleUrl = `https://www.dropwater.in/blog/${slug}`;
+  const articleImage = new URL(article.image, 'https://www.dropwater.in').toString();
+  const blogPostingJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: article.title,
+    datePublished: article.datePublished,
+    author: {
+      '@type': 'Organization',
+      name: 'DROP. Editorial Team',
+    },
+    image: articleImage,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': articleUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'DROP.',
+      url: 'https://www.dropwater.in',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://www.dropwater.in/assets/new-can-2.png',
+      },
+    },
+  };
+
   return (
     <div className="bg-[#0F1112] min-h-screen text-white flex flex-col font-sans selection:bg-[#C9A84C] selection:text-[#111111]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(blogPostingJsonLd).replace(/</g, '\\u003c'),
+        }}
+      />
       <HeroNavbar />
       
       <main className="flex-grow pt-28 md:pt-36">

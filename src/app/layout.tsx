@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   description: 'Discover DROP., premium still and functional water packaged in recyclable aluminium cans. Launching in India in 2027. Join the early-access list.',
   keywords: ['Drop Water', 'drop water', 'DROP Water', 'Premium Canned Water', 'Canned Still Water', 'Aluminum Canned Water', 'Mint Water', 'Clove Water', 'Eco Friendly Water'],
-  authors: [{ name: 'Drop Water team' }],
+  authors: [{ name: 'DROP. Team' }],
   creator: 'DROP.',
   publisher: 'DROP.',
   formatDetection: {
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     description: 'Premium still and functional water in recyclable aluminium cans.',
     images: [
       {
-        url: '/images/drop-og-image.jpg',
+        url: '/assets/new-can-2.png',
         width: 1200,
         height: 630,
         alt: 'DROP premium canned water',
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Premium Canned Water in India | DROP.',
     description: 'Premium still and functional water in recyclable aluminium cans.',
-    images: ['/images/drop-og-image.jpg'],
+    images: ['/assets/new-can-2.png'],
   },
   robots: {
     index: true,
@@ -77,20 +77,22 @@ export default function RootLayout({
               '@type': 'Organization',
               name: 'DROP.',
               url: 'https://www.dropwater.in',
-              logo: 'https://www.dropwater.in/logo.png',
+              logo: 'https://www.dropwater.in/assets/new-can-2.png',
               email: 'contactus@dropwater.in',
               description: 'An Indian premium water brand creating still and functional water in recyclable aluminium cans.',
               address: {
                 '@type': 'PostalAddress',
-                addressLocality: 'Mumbai',
+                streetAddress: 'Vashi, Juhugaon',
+                addressLocality: 'Navi Mumbai',
                 addressRegion: 'Maharashtra',
+                postalCode: '400703',
                 addressCountry: 'IN'
               },
               telephone: '+918976127355',
               sameAs: [
                 'https://www.instagram.com/dropwaterco',
                 'https://x.com/dropofficialw',
-                'https://www.facebook.com/share/14kfqixwQTn/?mibextid=wwXIfr'
+                'https://www.facebook.com/share/19DAJZCxGM/?mibextid=wwXIfr'
               ]
             })
           }}

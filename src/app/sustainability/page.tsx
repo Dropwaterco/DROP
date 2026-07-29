@@ -1,7 +1,7 @@
 import SustainabilityClient from './SustainabilityClient';
 
 export const metadata = {
-  title: 'Sustainability | DROP. No Plastic. No Bullsh*t.',
+  title: { absolute: 'Sustainability | DROP. No Plastic. No Bullsh*t.' },
   description: 'Learn why DROP. uses recyclable aluminium cans to create a more sustainable alternative to single-use plastic water bottles.',
   alternates: {
     canonical: '/sustainability',
@@ -9,6 +9,8 @@ export const metadata = {
   openGraph: {
     title: 'Sustainability | DROP. No Plastic. No Bullsh*t.',
     description: 'Learn why DROP. uses recyclable aluminium cans to create a more sustainable alternative to single-use plastic water bottles.',
+    siteName: 'DROP.',
+    locale: 'en_IN',
     url: 'https://www.dropwater.in/sustainability',
     type: 'website',
   },
