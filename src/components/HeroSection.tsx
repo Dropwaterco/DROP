@@ -57,6 +57,11 @@ export default function HeroSection() {
 
   const currentTheme = THEMES[activeIndex];
 
+  useEffect(() => {
+    document.documentElement.style.setProperty('--drop-marquee-bg', currentTheme.text);
+    document.documentElement.style.setProperty('--drop-marquee-text', currentTheme.bg);
+  }, [currentTheme.bg, currentTheme.text]);
+
   return (
     <section
       id="hero"

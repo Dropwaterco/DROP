@@ -4,7 +4,13 @@ export default function MarqueeTicker() {
   const text = "PURE WATER · INFINITELY RECYCLABLE · 330ML + 500ML · AS. IT. SHOULD. BE. · ";
   const repeatedText = Array(10).fill(text).join('');
   return (
-    <div className="w-full border-y border-[#C9A84C]/30 bg-[#C9A84C] text-[#111111] py-4 md:py-5 overflow-hidden flex whitespace-nowrap relative">
+    <div
+      className="w-full border-y border-black/10 py-4 md:py-5 overflow-hidden flex whitespace-nowrap relative transition-colors duration-1000"
+      style={{
+        backgroundColor: 'var(--drop-marquee-bg, #E9D5FF)',
+        color: 'var(--drop-marquee-text, #1A0B2E)',
+      }}
+    >
       <div className="animate-marquee shrink-0 font-inter text-xs md:text-sm tracking-[0.24em] font-black uppercase inline-block">
         {repeatedText}
       </div>
