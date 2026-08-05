@@ -1,299 +1,219 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import { PointerEvent, useEffect, useRef, useState } from 'react';
 
-export interface CollectionItem {
-  title: string;
-  desc: string;
-  benefits: string;
-  format: string;
-  img: string;
-  altText: string;
-}
-
-export const collectionData: Record<'still' | 'mint' | 'athlete' | 'clove', CollectionItem> = {
-  still: {
-    title: 'STILL WATER',
-    desc: 'Pure, crisp still water in a premium recyclable aluminium can. The standard for everyday hydration.',
-    benefits: 'Everyday Hydration',
-    format: '330ML / 500ML CAN',
-    img: '/assets/new-can-2.png',
-    altText: 'DROP premium still water in a sleek silver aluminium can',
+const variants = [
+  {
+    name: 'MINT INFUSION', index: '01', image: '/assets/turntable/mint-front.png', accent: '#A987E9',
+    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to explore', scale: 'large',
   },
-  mint: {
-    title: 'MINT WATER',
-    desc: 'Crisp, cooling mint infusion crafted to refresh and reset.',
-    benefits: 'Recovery & Focus',
-    format: '330ML / 500ML CAN',
-    img: '/assets/new-can-variant-1.png',
-    altText: 'DROP mint functional water can in premium purple aluminium packaging',
+  {
+    name: 'ORIGINAL', index: '02', image: '/assets/turntable/original-front.png', accent: '#383838',
+    theme: 'light', headline: 'THE\nESSENTIAL.', prompt: 'DRAG', scale: 'large',
   },
-  athlete: {
-    title: 'ATHLETE EDITION',
-    desc: 'Zero-compromise performance hydration with elevated electrolytes.',
-    benefits: 'High-intensity Training',
-    format: '330ML / 500ML CAN',
-    img: '/assets/black_can_raw.png',
-    altText: 'DROP athlete edition functional water in a matte black aluminium can',
+  {
+    name: 'ATHLETE EDITION', index: '03', image: '/assets/turntable/athlete-front.png', accent: '#A987E9',
+    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to explore', scale: 'athlete',
   },
-  clove: {
-    title: 'CLOVE WATER',
-    desc: 'Infused with aromatic clove extracts to restore natural vitality.',
-    benefits: 'Vitality & Digestion',
-    format: '330ML / 500ML CAN',
-    img: '/assets/clove_can_transparent_fixed.png',
-    altText: 'DROP clove water in a premium blood red aluminium can',
+  {
+    name: 'CLOVE INFUSION', index: '04', image: '/assets/clove_can_transparent_fixed.png', accent: '#8E5045',
+    theme: 'light', headline: 'THE\nESSENTIAL.', prompt: 'DRAG', scale: 'large',
   },
-};
-
-type CollectionKey = keyof typeof collectionData;
-const KEYS = Object.keys(collectionData) as CollectionKey[];
+] as const;
 
 export default function VariantShowcase() {
-  const [activeKey, setActiveKey] = useState<CollectionKey>('still');
-  const activeProduct = collectionData[activeKey];
-  const sectionRef = useRef<HTMLElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [rotation, setRotation] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const dragStart = useRef({ x: 0, rotation: 0 });
+  const active = variants[activeIndex];
+  const isDark = active.theme === 'dark';
+  const displayRotation = ((rotation % 360) + 360) % 360;
+  const turnRadians = (displayRotation * Math.PI) / 180;
+  const turnWidth = Math.max(0.12, Math.abs(Math.cos(turnRadians)));
+  const isRearHalf = displayRotation > 90 && displayRotation < 270;
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      { threshold: 0.05 }
-    );
-    observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
+    if (dragging || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let frame = 0;
+    let previous = performance.now();
+    const tick = (now: number) => {
+      const elapsed = Math.min(now - previous, 40);
+      previous = now;
+      setRotation((value) => value + elapsed * 0.018);
+      frame = requestAnimationFrame(tick);
+    };
+
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [dragging]);
 
   useEffect(() => {
-    if (!isVisible) return;
-    const interval = setInterval(() => {
-      setActiveKey((prev) => {
-        const currentIndex = KEYS.indexOf(prev);
-        const nextIndex = (currentIndex + 1) % KEYS.length;
-        return KEYS[nextIndex];
-      });
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [isVisible]);
+    if (dragging || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = window.setInterval(() => {
+      setActiveIndex((index) => (index + 1) % variants.length);
+    }, 7000);
+    return () => window.clearInterval(timer);
+  }, [dragging]);
 
-  const getGradient = (key: CollectionKey) => {
-    switch (key) {
-      case 'mint': return 'linear-gradient(180deg, #07030A 0%, #150A21 100%)';
-      case 'athlete': return 'linear-gradient(180deg, #050505 0%, #111111 100%)';
-      case 'clove': return 'linear-gradient(180deg, #0A0203 0%, #1F0506 100%)';
-      case 'still':
-      default: return 'linear-gradient(180deg, #050709 0%, #0C1217 100%)';
-    }
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    event.currentTarget.setPointerCapture(event.pointerId);
+    dragStart.current = { x: event.clientX, rotation };
+    setDragging(true);
   };
 
-  const getAccentColor = (key: CollectionKey) => {
-    switch (key) {
-      case 'mint': return '#D6BCFA';
-      case 'athlete': return '#F8FAFC';
-      case 'clove': return '#FEB2B2';
-      case 'still':
-      default: return '#E2E8F0';
-    }
+  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (!dragging) return;
+    setRotation(dragStart.current.rotation + (event.clientX - dragStart.current.x) * (window.innerWidth < 768 ? 0.8 : 0.5));
   };
 
-  const getTitleStyles = (key: CollectionKey) => {
-    const base = { color: getAccentColor(key) };
-    switch (key) {
-      case 'mint':
-        return { ...base, fontFamily: 'var(--font-heading)', textTransform: 'uppercase' as const, letterSpacing: '0.02em', fontWeight: 600 };
-      case 'athlete':
-        return { ...base, fontFamily: 'var(--font-heading)', textTransform: 'uppercase' as const, letterSpacing: '0.01em', fontWeight: 800 };
-      case 'clove':
-        return { ...base, fontFamily: 'var(--font-serif)', textTransform: 'none' as const, letterSpacing: '0', fontWeight: 400, fontStyle: 'italic' };
-      case 'still':
-      default:
-        return { ...base, fontFamily: 'var(--font-body)', textTransform: 'uppercase' as const, letterSpacing: '-0.04em', fontWeight: 800 };
-    }
+  const setVariant = (index: number) => {
+    setActiveIndex(index);
   };
-
-  const accentColor = getAccentColor(activeKey);
-  const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
   return (
-    <section ref={sectionRef} id="products" className="relative w-full max-w-full text-white font-sans min-h-screen flex overflow-hidden bg-[#050505]">
-      {/* Background Gradient Layers */}
-      {KEYS.map((key) => (
-        <div
-          key={key}
-          className="absolute inset-0 z-0 pointer-events-none transition-opacity duration-1000"
-          style={{
-            background: getGradient(key),
-            opacity: activeKey === key ? 1 : 0,
-          }}
-        />
-      ))}
-      
-      <div className="max-w-[1600px] w-full mx-auto flex flex-col md:flex-row relative z-10 overflow-hidden">
-        
-        {/* Left Sticky Tab Navigation (aside) */}
-        <aside className="w-full md:w-1/3 lg:w-1/4 pt-20 md:pt-40 px-5 sm:px-6 md:px-12 lg:px-16 flex flex-col md:border-r border-white/5 md:sticky md:top-0 h-auto md:h-screen z-20">
-          <h2 className="text-xs font-bold tracking-[0.4em] uppercase text-white/40 mb-10 pl-4">
-            The Collection
-          </h2>
-          
-          <div className="flex md:flex-col gap-3 overflow-x-auto md:overflow-visible pb-6 md:pb-0 scrollbar-hide">
-            {KEYS.map((key) => {
-              const p = collectionData[key];
-              const isActive = activeKey === key;
-              return (
-                <button
-                  key={key}
-                  onClick={() => setActiveKey(key)}
-                  className={`relative flex items-center px-5 py-4 md:py-5 rounded-2xl transition-all duration-500 text-left focus:outline-none group overflow-hidden touch-manipulation border ${
-                    isActive 
-                      ? 'bg-white/5 border-white/10' 
-                      : 'border-transparent hover:bg-white/[0.02]'
-                  }`}
-                >
-                  <span 
-                    className={`text-sm md:text-base font-bold uppercase tracking-widest transition-colors duration-500 relative z-10 ${
-                      isActive ? 'text-white' : 'text-white/30 group-hover:text-white/60'
-                    }`}
-                  >
-                    {p.title}
-                  </span>
-                  
-                  {isActive && (
-                    <motion.div 
-                      layoutId="activeTabIndicator"
-                      className="absolute left-0 top-0 bottom-0 w-[3px] hidden md:block z-20"
-                      style={{ backgroundColor: getAccentColor(key) }}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </aside>
+    <section
+      id="products"
+      data-theme={active.theme}
+      className={`relative isolate min-h-[100svh] overflow-hidden transition-colors duration-700 ${
+        isDark ? 'bg-[#08090B] text-[#F2F0F4]' : 'bg-[#F4F1EB] text-[#22201F]'
+      }`}
+      style={{ '--accent': active.accent } as React.CSSProperties}
+    >
+      <div className={`absolute inset-0 transition-opacity duration-700 ${isDark ? 'opacity-100' : 'opacity-0'} bg-[radial-gradient(circle_at_65%_48%,rgba(104,76,143,.18),transparent_34%)]`} />
 
-        {/* Right Dynamic Viewport (main) */}
-        <main className="w-full md:w-2/3 lg:w-3/4 flex flex-col-reverse md:flex-row items-center justify-between px-5 sm:px-6 md:px-12 lg:px-24 py-16 md:py-32 relative z-10 overflow-hidden">
-          
-          {/* Text Content */}
-          <div className="w-full md:w-1/2 flex flex-col justify-center z-20 mt-16 md:mt-0">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeKey}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+      <div className="relative mx-auto grid min-h-[100svh] w-full max-w-[1800px] grid-rows-[auto_1fr_auto] px-6 py-8 sm:px-10 md:px-16 md:py-12">
+        <div className="relative z-30 flex items-center justify-between text-[10px] font-medium tracking-[0.2em] md:text-xs">
+          <span>{active.theme === 'light' ? `${active.index} — ${active.name}` : `DROP / ${active.index}`}</span>
+          <span className={`${isDark ? 'block' : 'hidden'} text-white/45 md:hidden`}>{active.name} / 330ML</span>
+        </div>
+
+        <div className="relative grid min-h-0 items-center md:grid-cols-[38%_62%]">
+          <div className={`relative z-20 pt-8 md:pt-0 ${isDark ? 'block' : 'block'}`}>
+            <h2
+              className={`${
+                isDark
+                  ? 'font-sans text-[clamp(2.5rem,5vw,5.6rem)] font-light leading-[1.02] tracking-[-0.045em]'
+                  : 'font-serif text-[clamp(3rem,6vw,7rem)] font-normal leading-[.9] tracking-[-0.045em]'
+              } whitespace-pre-line`}
+            >
+              {active.headline.split('\n').map((line) => (
+                <span key={line} className="block">
+                  {line === 'AS IT SHOULD BE.' && isDark ? <span className="text-[var(--accent)]">{line}</span> : line}
+                </span>
+              ))}
+            </h2>
+            <p className={`mt-6 max-w-[290px] text-base leading-relaxed md:text-lg ${isDark ? 'text-white/48' : 'text-black/65'}`}>
+              {isDark ? 'Drag to explore' : 'Still water in infinitely recyclable aluminium.'}
+            </p>
+            {isDark && (
+              <div className="mt-14 hidden gap-3 md:flex" aria-hidden="true">
+                {variants.map((variant, index) => (
+                  <span key={variant.name} className="h-2.5 w-2.5 rounded-full" style={{ background: variant.accent, opacity: index === activeIndex ? 1 : .28 }} />
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div
+            className={`relative z-10 flex h-[58svh] min-h-[440px] cursor-ew-resize touch-none select-none items-center justify-center overflow-hidden md:h-[79svh] ${dragging ? 'cursor-grabbing' : ''}`}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={() => setDragging(false)}
+            onPointerCancel={() => setDragging(false)}
+            onLostPointerCapture={() => setDragging(false)}
+            role="slider"
+            tabIndex={0}
+            aria-label={`Rotate ${active.name} can`}
+            aria-valuemin={0}
+            aria-valuemax={360}
+            aria-valuenow={Math.round(displayRotation)}
+            onKeyDown={(event) => {
+              if (event.key === 'ArrowLeft') setRotation(rotation - 12);
+              if (event.key === 'ArrowRight') setRotation(rotation + 12);
+            }}
+          >
+            <div className="relative h-full w-full">
+              <div
+                key={active.name}
+                className="can-product-enter absolute inset-0 will-change-transform"
+                style={{
+                  transform: `scaleX(${turnWidth}) translateX(${Math.sin(turnRadians) * 2.25}%)`,
+                  filter: `brightness(${isRearHalf ? 0.78 : 1}) saturate(${isRearHalf ? 0.84 : 1})`,
+                }}
               >
-                <h2 
-                  className="text-[clamp(2.5rem,12vw,6rem)] mb-6 leading-[1.08] origin-left py-1"
-                  style={getTitleStyles(activeKey)}
-                >
-                  {activeProduct.title}
-                </h2>
-                
-                <p className="text-base lg:text-lg font-light leading-relaxed text-white/70 mb-10 max-w-md">
-                  {activeProduct.desc}
-                </p>
-                
-                <div className="flex flex-col gap-4 mb-12">
-                  <div className="flex items-center gap-4 border-b border-white/10 pb-4">
-                    <span className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 w-32">
-                      Designed for
-                    </span>
-                    <span className="text-sm font-semibold tracking-wide text-white/90">
-                      {activeProduct.benefits}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-xs font-bold tracking-[0.2em] uppercase text-white/40 w-32">
-                      Format
-                    </span>
-                    <span className="text-sm font-semibold tracking-wide text-white/90">
-                      {activeProduct.format}
-                    </span>
-                  </div>
-                </div>
-                
-                <Link 
-                  href="/#waitlist" 
-                  className="inline-flex items-center justify-center px-10 py-5 text-xs font-bold tracking-[0.2em] uppercase border hover:bg-white hover:text-black transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-transparent w-max group touch-manipulation"
-                  style={{ 
-                    borderColor: accentColor,
-                    color: '#FFFFFF'
-                  }}
-                >
-                  <span>Join The List</span>
-                </Link>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Clean Floating Can Display Viewport */}
-          <div className="w-full md:w-1/2 flex justify-center items-center relative h-[45vh] md:h-[75vh] z-10 overflow-hidden">
-            {KEYS.map((key) => {
-              const p = collectionData[key];
-              const isActive = activeKey === key;
-              return (
-                <div
-                  key={key}
-                  className="absolute w-[200px] h-[400px] md:w-[280px] md:h-[560px] lg:w-[420px] lg:h-[840px] flex items-center justify-center transition-all duration-500 pointer-events-none"
-                  style={{
-                    opacity: isActive ? 1 : 0,
-                    transform: isActive ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)',
-                    visibility: isActive ? 'visible' : 'hidden',
-                  }}
-                >
-                  <div 
-                    className={`w-full h-full flex items-center justify-center ${
-                      isActive && !prefersReducedMotion ? 'variant-showcase-float' : ''
+                  <Image
+                    src={active.image}
+                    alt={`DROP ${active.name.toLowerCase()} canned water`}
+                    fill
+                    priority
+                    quality={100}
+                    sizes="(max-width: 767px) 92vw, 62vw"
+                    draggable={false}
+                    className={`pointer-events-none object-contain drop-shadow-[0_30px_28px_rgba(0,0,0,.28)] ${
+                      active.scale === 'athlete' ? 'scale-[.84] md:scale-[.98]' : 'scale-[.9] md:scale-[1.08]'
                     }`}
-                    style={{
-                      filter: 'drop-shadow(0px 25px 25px rgba(0,0,0,0.5))',
-                    }}
-                  >
-                    <img
-                      src={p.img}
-                      alt={p.altText}
-                      className={`w-full h-full object-contain pointer-events-none transition-transform duration-500 ${
-                        key === 'athlete' 
-                          ? 'variant-showcase-img-athlete' 
-                          : key === 'still'
-                          ? 'variant-showcase-img-still' 
-                          : 'variant-showcase-img-other'
-                      }`}
-                      style={{
-                        transformOrigin: 'center'
-                      }}
-                    />
-                  </div>
-                </div>
-              );
-            })}
+                  />
+              </div>
+            </div>
           </div>
 
-        </main>
+          {!isDark && <div className="pointer-events-none absolute bottom-[2%] right-[8%] h-[18px] w-[45%] rounded-[50%] bg-black/10 blur-xl" />}
+        </div>
+
+        <div className="relative z-30 mx-auto w-full max-w-[1120px] pb-1">
+          <div className="mb-3 flex justify-center gap-3 md:hidden">
+            {variants.map((variant, index) => (
+              <button key={variant.name} onClick={() => setVariant(index)} className="flex h-8 w-8 items-center justify-center" aria-label={`Show ${variant.name}`} aria-pressed={index === activeIndex}>
+                <span className="rounded-full" style={{ width: index === activeIndex ? 10 : 6, height: index === activeIndex ? 10 : 6, background: variant.accent, opacity: index === activeIndex ? 1 : .35 }} />
+              </button>
+            ))}
+          </div>
+
+          <div className={`relative ${isDark ? '' : 'mx-auto max-w-[620px]'}`}>
+            {!isDark && <div className="pointer-events-none absolute -top-20 left-1/2 h-24 w-full -translate-x-1/2 rounded-[50%] border-b border-black/55" />}
+            <div className={`mb-2 flex items-center justify-between text-[11px] md:text-xs ${isDark ? 'text-white/70' : 'justify-center tracking-[.28em]'}`}>
+              {isDark ? <><span>00°</span><span>360°</span></> : <span>{active.prompt}</span>}
+            </div>
+            {isDark && (
+              <div
+                className="relative h-5 cursor-ew-resize touch-none before:absolute before:inset-x-0 before:top-1/2 before:h-px before:bg-white/22"
+                onPointerDown={(event) => {
+                  const rect = event.currentTarget.getBoundingClientRect();
+                  setRotation(((event.clientX - rect.left) / rect.width) * 360);
+                }}
+              >
+                <span className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--accent)]" style={{ left: `${displayRotation / 3.6}%` }} />
+              </div>
+            )}
+          </div>
+
+          <div className="mt-4 hidden items-center justify-center gap-5 md:flex" aria-label="Choose a DROP variant">
+            {variants.map((variant, index) => (
+              <button
+                key={variant.name}
+                onClick={() => setVariant(index)}
+                className={`text-[10px] tracking-[.16em] transition-opacity ${index === activeIndex ? 'opacity-100' : 'opacity-35 hover:opacity-70'}`}
+                aria-pressed={index === activeIndex}
+              >
+                {variant.name}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
-      <style dangerouslySetInnerHTML={{__html: `
-        @keyframes float-can {
-          0% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-15px) rotate(1deg); }
-          100% { transform: translateY(0px) rotate(0deg); }
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes can-product-enter {
+          from { opacity: 0; filter: blur(10px); }
+          to { opacity: 1; filter: blur(0); }
         }
-        @media (min-width: 768px) {
-          .variant-showcase-float {
-            animation: float-can 6s ease-in-out infinite;
-          }
+        .can-product-enter { animation: can-product-enter 700ms cubic-bezier(.22,.61,.36,1) both; }
+        @media (prefers-reduced-motion: reduce) {
+          .can-product-enter { animation: none; }
         }
-        .variant-showcase-img-athlete { transform: scale(0.75) !important; }
-        .variant-showcase-img-still { transform: scale(2.4) !important; }
-        .variant-showcase-img-other { transform: scale(2.4) !important; }
-      `}} />
+      ` }} />
     </section>
   );
 }
