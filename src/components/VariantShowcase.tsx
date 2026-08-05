@@ -1,20 +1,21 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { PointerEvent, useEffect, useRef, useState } from 'react';
 
 const variants = [
   {
-    name: 'MINT INFUSION', index: '01', image: '/assets/turntable/mint-front.png', accent: '#A987E9',
-    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to explore', scale: 'large',
+    name: 'MINT INFUSION', index: '01', image: '/assets/products-mint-trio.jpeg', accent: '#A987E9',
+    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to explore', scale: 'trio',
   },
   {
-    name: 'ORIGINAL', index: '02', image: '/assets/turntable/original-front.png', accent: '#383838',
-    theme: 'light', headline: 'THE\nESSENTIAL.', prompt: 'DRAG', scale: 'large',
+    name: 'ORIGINAL', index: '02', image: '/assets/products-original-trio.jpeg', accent: '#383838',
+    theme: 'light', headline: 'THE\nESSENTIAL.', prompt: 'DRAG', scale: 'trio',
   },
   {
-    name: 'ATHLETE EDITION', index: '03', image: '/assets/turntable/athlete-front.png', accent: '#A987E9',
-    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to explore', scale: 'athlete',
+    name: 'ATHLETE EDITION', index: '03', image: '/assets/products-athlete-trio.jpeg', accent: '#A987E9',
+    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to explore', scale: 'trio',
   },
   {
     name: 'CLOVE INFUSION', index: '04', image: '/assets/clove_can_transparent_fixed.png', accent: '#8E5045',
@@ -108,6 +109,16 @@ export default function VariantShowcase() {
             <p className={`mt-6 max-w-[290px] text-base leading-relaxed md:text-lg ${isDark ? 'text-white/48' : 'text-black/65'}`}>
               {isDark ? 'Drag to explore' : 'Still water in infinitely recyclable aluminium.'}
             </p>
+            <Link
+              href="/#waitlist"
+              className={`mt-8 inline-flex min-h-12 items-center justify-center rounded-full px-6 text-xs font-semibold uppercase tracking-[0.16em] transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-4 ${
+                isDark
+                  ? 'bg-white text-black focus-visible:ring-offset-[#08090B]'
+                  : 'bg-[#22201F] text-white focus-visible:ring-offset-[#F4F1EB]'
+              }`}
+            >
+              Be a customer now
+            </Link>
             {isDark && (
               <div className="mt-14 hidden gap-3 md:flex" aria-hidden="true">
                 {variants.map((variant, index) => (
@@ -140,8 +151,12 @@ export default function VariantShowcase() {
                 key={active.name}
                 className="can-product-enter absolute inset-0 will-change-transform"
                 style={{
-                  transform: `scaleX(${turnWidth}) translateX(${Math.sin(turnRadians) * 2.25}%)`,
-                  filter: `brightness(${isRearHalf ? 0.78 : 1}) saturate(${isRearHalf ? 0.84 : 1})`,
+                  transform: active.scale === 'trio'
+                    ? `scaleX(${Math.max(0.86, turnWidth)}) translateX(${Math.sin(turnRadians) * 1.25}%)`
+                    : `scaleX(${turnWidth}) translateX(${Math.sin(turnRadians) * 2.25}%)`,
+                  filter: active.scale === 'trio'
+                    ? `brightness(${isRearHalf ? 0.92 : 1}) saturate(${isRearHalf ? 0.94 : 1})`
+                    : `brightness(${isRearHalf ? 0.78 : 1}) saturate(${isRearHalf ? 0.84 : 1})`,
                 }}
               >
                   <Image
@@ -153,7 +168,7 @@ export default function VariantShowcase() {
                     sizes="(max-width: 767px) 92vw, 62vw"
                     draggable={false}
                     className={`pointer-events-none object-contain drop-shadow-[0_30px_28px_rgba(0,0,0,.28)] ${
-                      active.scale === 'athlete' ? 'scale-[.84] md:scale-[.98]' : 'scale-[.9] md:scale-[1.08]'
+                      active.scale === 'trio' ? 'scale-[.94] md:scale-[1.02]' : 'scale-[.9] md:scale-[1.08]'
                     }`}
                   />
               </div>
