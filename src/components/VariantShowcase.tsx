@@ -6,16 +6,16 @@ import { PointerEvent, useEffect, useRef, useState } from 'react';
 
 const variants = [
   {
-    name: 'MINT INFUSION', index: '01', image: '/assets/products-mint-trio.jpeg', accent: '#A987E9',
-    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to explore', scale: 'trio',
+    name: 'MINT INFUSION', index: '01', image: '/assets/turntable/mint-front.png', accent: '#A987E9',
+    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to rotate', scale: 'large',
   },
   {
-    name: 'ORIGINAL', index: '02', image: '/assets/products-original-trio.jpeg', accent: '#383838',
-    theme: 'light', headline: 'THE\nESSENTIAL.', prompt: 'DRAG', scale: 'trio',
+    name: 'ORIGINAL', index: '02', image: '/assets/turntable/original-front.png', accent: '#383838',
+    theme: 'light', headline: 'THE\nESSENTIAL.', prompt: 'DRAG TO ROTATE', scale: 'large',
   },
   {
-    name: 'ATHLETE EDITION', index: '03', image: '/assets/products-athlete-trio.jpeg', accent: '#A987E9',
-    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to explore', scale: 'trio',
+    name: 'ATHLETE EDITION', index: '03', image: '/assets/turntable/athlete-front.png', accent: '#A987E9',
+    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to rotate', scale: 'athlete',
   },
   {
     name: 'CLOVE INFUSION', index: '04', image: '/assets/clove_can_transparent_fixed.png', accent: '#8E5045',
@@ -107,7 +107,7 @@ export default function VariantShowcase() {
               ))}
             </h2>
             <p className={`mt-6 max-w-[290px] text-base leading-relaxed md:text-lg ${isDark ? 'text-white/48' : 'text-black/65'}`}>
-              {isDark ? 'Drag to explore' : 'Still water in infinitely recyclable aluminium.'}
+              {isDark ? 'Drag to rotate' : 'Still water in infinitely recyclable aluminium.'}
             </p>
             <Link
               href="/#waitlist"
@@ -149,14 +149,10 @@ export default function VariantShowcase() {
             <div className="relative h-full w-full">
               <div
                 key={active.name}
-                className="can-product-enter absolute inset-0 will-change-transform"
+                className="can-product-enter absolute inset-0 will-change-transform [transform-style:preserve-3d]"
                 style={{
-                  transform: active.scale === 'trio'
-                    ? `scaleX(${Math.max(0.86, turnWidth)}) translateX(${Math.sin(turnRadians) * 1.25}%)`
-                    : `scaleX(${turnWidth}) translateX(${Math.sin(turnRadians) * 2.25}%)`,
-                  filter: active.scale === 'trio'
-                    ? `brightness(${isRearHalf ? 0.92 : 1}) saturate(${isRearHalf ? 0.94 : 1})`
-                    : `brightness(${isRearHalf ? 0.78 : 1}) saturate(${isRearHalf ? 0.84 : 1})`,
+                  transform: `perspective(1400px) scaleX(${turnWidth}) translateX(${Math.sin(turnRadians) * 2.25}%)`,
+                  filter: `brightness(${isRearHalf ? 0.78 : 1}) saturate(${isRearHalf ? 0.84 : 1})`,
                 }}
               >
                   <Image
@@ -168,8 +164,16 @@ export default function VariantShowcase() {
                     sizes="(max-width: 767px) 92vw, 62vw"
                     draggable={false}
                     className={`pointer-events-none object-contain drop-shadow-[0_30px_28px_rgba(0,0,0,.28)] ${
-                      active.scale === 'trio' ? 'scale-[.94] md:scale-[1.02]' : 'scale-[.9] md:scale-[1.08]'
+                      active.scale === 'athlete' ? 'scale-[.84] md:scale-[.98]' : 'scale-[.9] md:scale-[1.08]'
                     }`}
+                  />
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-y-[8%] left-1/2 w-[34%] -translate-x-1/2 rounded-[50%] opacity-30 mix-blend-screen blur-2xl"
+                    style={{
+                      background: `linear-gradient(90deg, transparent, ${active.accent}, transparent)`,
+                      transform: `translateX(calc(-50% + ${Math.sin(turnRadians) * 42}px))`,
+                    }}
                   />
               </div>
             </div>
