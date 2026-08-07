@@ -4,24 +4,59 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { PointerEvent, useEffect, useRef, useState } from 'react';
 
-const variants = [
+type Variant = {
+  name: string;
+  index: string;
+  image: string;
+  frames?: readonly string[];
+  accent: string;
+  theme: 'dark' | 'light';
+  background: string;
+  headline: string;
+  prompt: string;
+  scale: 'large' | 'athlete';
+};
+
+const variants: readonly Variant[] = [
   {
     name: 'MINT INFUSION', index: '01', image: '/assets/turntable/mint-front.png', accent: '#A987E9',
-    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to rotate', scale: 'large',
+    frames: [
+      '/assets/turntable/frames/mint-front.png',
+      '/assets/turntable/frames/mint-right.png',
+      '/assets/turntable/frames/mint-left.png',
+    ],
+    theme: 'dark', background: '#08090B', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to rotate', scale: 'large',
   },
   {
     name: 'ORIGINAL', index: '02', image: '/assets/turntable/original-front.png', accent: '#383838',
-    theme: 'light', headline: 'THE\nESSENTIAL.', prompt: 'DRAG TO ROTATE', scale: 'large',
+    frames: [
+      '/assets/turntable/frames/original-front.jpg',
+      '/assets/turntable/frames/original-right.jpg',
+      '/assets/turntable/frames/original-left.jpg',
+    ],
+    theme: 'dark', background: '#3B3B3B', headline: 'THE\nESSENTIAL.', prompt: 'DRAG TO ROTATE', scale: 'large',
   },
   {
     name: 'ATHLETE EDITION', index: '03', image: '/assets/turntable/athlete-front.png', accent: '#A987E9',
-    theme: 'dark', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to rotate', scale: 'athlete',
+    frames: [
+      '/assets/turntable/frames/athlete-front.jpg',
+      '/assets/turntable/frames/athlete-right.jpg',
+      '/assets/turntable/frames/athlete-left.jpg',
+    ],
+    theme: 'dark', background: '#1B1B1D', headline: 'WATER.\nAS IT SHOULD BE.', prompt: 'Drag to rotate', scale: 'athlete',
   },
   {
     name: 'CLOVE INFUSION', index: '04', image: '/assets/clove_can_transparent_fixed.png', accent: '#8E5045',
-    theme: 'light', headline: 'THE\nESSENTIAL.', prompt: 'DRAG', scale: 'large',
+    theme: 'light', background: '#F4F1EB', headline: 'THE\nESSENTIAL.', prompt: 'DRAG', scale: 'large',
   },
 ] as const;
+
+const frameAngles = [0, 120, 240] as const;
+
+function frameOpacity(rotation: number, frameAngle: number) {
+  const distance = Math.abs(((rotation - frameAngle + 540) % 360) - 180);
+  return Math.max(0, 1 - distance / 120);
+}
 
 export default function VariantShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -31,9 +66,6 @@ export default function VariantShowcase() {
   const active = variants[activeIndex];
   const isDark = active.theme === 'dark';
   const displayRotation = ((rotation % 360) + 360) % 360;
-  const turnRadians = (displayRotation * Math.PI) / 180;
-  const turnWidth = Math.max(0.12, Math.abs(Math.cos(turnRadians)));
-  const isRearHalf = displayRotation > 90 && displayRotation < 270;
 
   useEffect(() => {
     if (dragging || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -54,6 +86,7 @@ export default function VariantShowcase() {
   useEffect(() => {
     if (dragging || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const timer = window.setInterval(() => {
+      setRotation(0);
       setActiveIndex((index) => (index + 1) % variants.length);
     }, 7000);
     return () => window.clearInterval(timer);
@@ -71,6 +104,7 @@ export default function VariantShowcase() {
   };
 
   const setVariant = (index: number) => {
+    setRotation(0);
     setActiveIndex(index);
   };
 
@@ -78,10 +112,8 @@ export default function VariantShowcase() {
     <section
       id="products"
       data-theme={active.theme}
-      className={`relative isolate min-h-[100svh] overflow-hidden transition-colors duration-700 ${
-        isDark ? 'bg-[#08090B] text-[#F2F0F4]' : 'bg-[#F4F1EB] text-[#22201F]'
-      }`}
-      style={{ '--accent': active.accent } as React.CSSProperties}
+      className={`relative isolate min-h-[100svh] overflow-hidden transition-colors duration-700 ${isDark ? 'text-[#F2F0F4]' : 'text-[#22201F]'}`}
+      style={{ '--accent': active.accent, backgroundColor: active.background } as React.CSSProperties}
     >
       <div className={`absolute inset-0 transition-opacity duration-700 ${isDark ? 'opacity-100' : 'opacity-0'} bg-[radial-gradient(circle_at_65%_48%,rgba(104,76,143,.18),transparent_34%)]`} />
 
@@ -146,15 +178,26 @@ export default function VariantShowcase() {
               if (event.key === 'ArrowRight') setRotation(rotation + 12);
             }}
           >
-            <div className="relative h-full w-full">
+            <div className="relative h-full w-full overflow-hidden">
               <div
                 key={active.name}
-                className="can-product-enter absolute inset-0 will-change-transform [transform-style:preserve-3d]"
-                style={{
-                  transform: `perspective(1400px) scaleX(${turnWidth}) translateX(${Math.sin(turnRadians) * 2.25}%)`,
-                  filter: `brightness(${isRearHalf ? 0.78 : 1}) saturate(${isRearHalf ? 0.84 : 1})`,
-                }}
+                className="can-product-enter absolute inset-0"
               >
+                {active.frames ? active.frames.map((frame, frameIndex) => (
+                  <Image
+                    key={frame}
+                    src={frame}
+                    alt={frameIndex === 0 ? `DROP ${active.name.toLowerCase()} canned water` : ''}
+                    fill
+                    priority
+                    quality={100}
+                    sizes="(max-width: 767px) 92vw, 62vw"
+                    draggable={false}
+                    aria-hidden={frameIndex !== 0}
+                    className="pointer-events-none object-contain will-change-[opacity]"
+                    style={{ opacity: frameOpacity(displayRotation, frameAngles[frameIndex]) }}
+                  />
+                )) : (
                   <Image
                     src={active.image}
                     alt={`DROP ${active.name.toLowerCase()} canned water`}
@@ -163,18 +206,9 @@ export default function VariantShowcase() {
                     quality={100}
                     sizes="(max-width: 767px) 92vw, 62vw"
                     draggable={false}
-                    className={`pointer-events-none object-contain drop-shadow-[0_30px_28px_rgba(0,0,0,.28)] ${
-                      active.scale === 'athlete' ? 'scale-[.84] md:scale-[.98]' : 'scale-[.9] md:scale-[1.08]'
-                    }`}
+                    className="pointer-events-none object-contain drop-shadow-[0_30px_28px_rgba(0,0,0,.24)]"
                   />
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-y-[8%] left-1/2 w-[34%] -translate-x-1/2 rounded-[50%] opacity-30 mix-blend-screen blur-2xl"
-                    style={{
-                      background: `linear-gradient(90deg, transparent, ${active.accent}, transparent)`,
-                      transform: `translateX(calc(-50% + ${Math.sin(turnRadians) * 42}px))`,
-                    }}
-                  />
+                )}
               </div>
             </div>
           </div>

@@ -52,6 +52,7 @@
 - Iteration 6: multi-can carousel removed in favor of a single-product 360° stage, matching the clarified interaction model. Corrected live section captured into Figma at `https://www.figma.com/design/SYxDVqHE8u7NeYWbkmjBuM?node-id=1-2`.
 - Iteration 7: added constant rotation, timed automatic variant progression, and a restrained blur/fade transition while preserving one visible can at a time.
 - Iteration 8: integrated the three newly approved product turnarounds as alpha-isolated assets, retained rose-gold, removed the mirrored flat-card transform, and added a boundaryless continuous turntable projection.
+- Iteration 9: user evidence showed the projection still collapsed the can into a narrow strip at intermediate angles. Removed all `scaleX`/perspective simulation and rebuilt rotation as a full-width multi-angle turntable driven by the actual supplied front, rear, and three-quarter renders. Mint frames were background-extracted for the dark stage; Original and Athlete use their native studio backdrops matched to their section backgrounds. The can now keeps its full physical width, upright silhouette, readable typography, and product-photography quality throughout the motion.
 - Post-fix visual evidence: blocked because no browser surface is available.
 
 final result: blocked
