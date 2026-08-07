@@ -10,7 +10,17 @@ import type { Product3DConfig } from './types';
 const IDLE_SPEED = (Math.PI * 2) / 10;
 const RESUME_DELAY_MS = 2500;
 
-export function RotationController({ product, reducedMotion }: { product: Product3DConfig; reducedMotion: boolean }) {
+export function RotationController({
+  products,
+  activeIndex,
+  reducedMotion,
+  onInteractionChange,
+}: {
+  products: readonly Product3DConfig[];
+  activeIndex: number;
+  reducedMotion: boolean;
+  onInteractionChange?: (interacting: boolean) => void;
+}) {
   const group = useRef<Group>(null);
   const dragging = useRef(false);
   const previousX = useRef(0);
@@ -44,6 +54,7 @@ export function RotationController({ product, reducedMotion }: { product: Produc
         previousX.current = event.clientX;
         velocity.current = 0;
         lastInteraction.current = performance.now();
+        onInteractionChange?.(true);
         (event.nativeEvent.target as HTMLElement | null)?.setPointerCapture(event.pointerId);
       }}
       onPointerMove={(event) => {
@@ -58,14 +69,18 @@ export function RotationController({ product, reducedMotion }: { product: Produc
       onPointerUp={(event) => {
         dragging.current = false;
         lastInteraction.current = performance.now();
+        onInteractionChange?.(false);
         (event.nativeEvent.target as HTMLElement | null)?.releasePointerCapture(event.pointerId);
       }}
       onPointerCancel={() => {
         dragging.current = false;
         lastInteraction.current = performance.now();
+        onInteractionChange?.(false);
       }}
     >
-      <CanModel product={product} />
+      {products.map((product, index) => (
+        <CanModel key={product.id} product={product} active={index === activeIndex} reducedMotion={reducedMotion} />
+      ))}
     </group>
   );
 }

@@ -5,7 +5,7 @@ import type { Product3DConfig } from './types';
 
 export function ProductFallback({ product }: { product: Product3DConfig }) {
   return (
-    <div className="product-fallback-enter relative h-full w-full" aria-label={`${product.name} product view`}>
+    <div className="relative h-full w-full" aria-label={`${product.name} product view`}>
       <Image
         src={product.fallbackImage}
         alt={`DROP ${product.name.toLowerCase()} aluminium water can`}

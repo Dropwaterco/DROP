@@ -1,13 +1,15 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { LazyProduct3DScene } from './product-3d/LazyProduct3DScene';
 import { PRODUCT_3D_CONFIG } from './product-3d/productConfig';
 import { useReducedMotion } from './product-3d/useReducedMotion';
 
 export default function VariantShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const pauseUntil = useRef(0);
+  const dragging = useRef(false);
   const reducedMotion = useReducedMotion();
   const active = PRODUCT_3D_CONFIG[activeIndex];
   const isDark = active.theme === 'dark';
@@ -15,10 +17,21 @@ export default function VariantShowcase() {
   useEffect(() => {
     if (reducedMotion) return;
     const timer = window.setInterval(() => {
+      if (dragging.current || Date.now() < pauseUntil.current) return;
       setActiveIndex((index) => (index + 1) % PRODUCT_3D_CONFIG.length);
-    }, 12000);
+    }, 4500);
     return () => window.clearInterval(timer);
   }, [reducedMotion]);
+
+  const selectProduct = useCallback((index: number) => {
+    pauseUntil.current = Date.now() + 6000;
+    setActiveIndex(index);
+  }, []);
+
+  const handleInteractionChange = useCallback((interacting: boolean) => {
+    dragging.current = interacting;
+    if (!interacting) pauseUntil.current = Date.now() + 2500;
+  }, []);
 
   return (
     <section
@@ -28,13 +41,13 @@ export default function VariantShowcase() {
       style={{ '--accent': active.accent, backgroundColor: active.background } as React.CSSProperties}
     >
       <div className="relative mx-auto grid min-h-[100svh] w-full max-w-[1800px] grid-rows-[auto_1fr_auto] px-6 py-8 sm:px-10 md:px-16 md:py-12">
-        <header className="relative z-20 flex items-center justify-between text-[10px] font-medium tracking-[0.2em] md:text-xs">
+        <header key={`header-${active.id}`} className="product-copy-enter relative z-20 flex items-center justify-between text-[10px] font-medium tracking-[0.2em] md:text-xs">
           <span>DROP / {active.index}</span>
           <span className={isDark ? 'text-white/48' : 'text-black/48'}>{active.name} / {active.capacity}</span>
         </header>
 
         <div className="relative grid min-h-0 items-center md:grid-cols-[39%_61%]">
-          <div className="relative z-20 pt-10 md:pt-0">
+          <div key={`copy-${active.id}`} className="product-copy-enter relative z-20 pt-10 md:pt-0">
             <h2 className={`${isDark ? 'font-sans font-light' : 'font-serif font-normal'} whitespace-pre-line text-[clamp(2.8rem,5.4vw,6rem)] leading-[.96] tracking-[-0.05em]`}>
               {active.headline.split('\n').map((line, index) => (
                 <span key={line} className={`block ${index === 1 && active.id === 'mint' ? 'text-[var(--accent)]' : ''}`}>{line}</span>
@@ -53,7 +66,7 @@ export default function VariantShowcase() {
           </div>
 
           <div className="relative z-10 h-[58svh] min-h-[430px] md:h-[79svh]">
-            <LazyProduct3DScene key={active.id} product={active} />
+            <LazyProduct3DScene products={PRODUCT_3D_CONFIG} activeIndex={activeIndex} onInteractionChange={handleInteractionChange} />
           </div>
         </div>
 
@@ -68,7 +81,7 @@ export default function VariantShowcase() {
               <button
                 key={product.id}
                 type="button"
-                onClick={() => setActiveIndex(index)}
+                onClick={() => selectProduct(index)}
                 className={`min-h-8 text-[10px] uppercase tracking-[.17em] transition-opacity ${index === activeIndex ? 'opacity-100' : 'opacity-35 hover:opacity-70'}`}
                 aria-pressed={index === activeIndex}
               >
@@ -80,12 +93,12 @@ export default function VariantShowcase() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes product-fallback-enter {
-          from { opacity: 0; transform: scale(.965) rotate(-1deg); }
-          to { opacity: 1; transform: scale(1) rotate(-2deg); }
+        @keyframes product-copy-enter {
+          from { opacity: 0; transform: translateY(4px); }
+          to { opacity: 1; transform: translateY(0); }
         }
-        .product-fallback-enter { animation: product-fallback-enter 900ms cubic-bezier(.22,.61,.36,1) both; }
-        @media (prefers-reduced-motion: reduce) { .product-fallback-enter { animation: none; } }
+        .product-copy-enter { animation: product-copy-enter 320ms cubic-bezier(.22,.61,.36,1) both; }
+        @media (prefers-reduced-motion: reduce) { .product-copy-enter { animation: none; } }
       ` }} />
     </section>
   );

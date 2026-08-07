@@ -57,7 +57,7 @@ const MILESTONES: Milestone[] = [
 ];
 
 export default function StoryClient() {
-  const [preset, setPreset] = useState<ThemePreset>('obsidian');
+  const [preset] = useState<ThemePreset>('editorial');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   // Horizontal scroll states
@@ -352,34 +352,6 @@ export default function StoryClient() {
 
       {/* HeroNavbar text switches theme style correctly */}
       <HeroNavbar activeIndex={preset === 'bento' || preset === 'editorial' ? 4 : 1} />
-
-      {/* Floating Interactive Design Mode Switcher */}
-      <div className="fixed bottom-4 left-1/2 z-[100] flex w-[calc(100%-1.5rem)] max-w-max -translate-x-1/2 gap-1 overflow-x-auto rounded-full border border-white/10 bg-black/70 p-1.5 shadow-2xl backdrop-blur-xl sm:bottom-6">
-        <button
-          onClick={() => setPreset('obsidian')}
-          className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[9px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'obsidian' ? 'bg-[#C9A84C] text-black shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
-        >
-          ✦ Obsidian Core
-        </button>
-        <button
-          onClick={() => setPreset('horizon')}
-          className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[9px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'horizon' ? 'bg-[#93C5FD] text-black shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
-        >
-          ✦ Liquid Horizon
-        </button>
-        <button
-          onClick={() => setPreset('bento')}
-          className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[9px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'bento' ? 'bg-[#007aff] text-white shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
-        >
-          ✦ Tech Bento
-        </button>
-        <button
-          onClick={() => setPreset('editorial')}
-          className={`shrink-0 px-3 sm:px-4 py-2 rounded-full text-[9px] sm:text-xs font-black tracking-widest uppercase transition-all duration-300 ${preset === 'editorial' ? 'bg-[#D9FF43] text-black shadow-lg font-black' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
-        >
-          ✦ Raw Editorial
-        </button>
-      </div>
 
       {/* Inline styles for custom preset rendering */}
       {stylePresets()}
