@@ -1,36 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { LazyProduct3DScene } from './product-3d/LazyProduct3DScene';
 import { PRODUCT_3D_CONFIG } from './product-3d/productConfig';
-import { useReducedMotion } from './product-3d/useReducedMotion';
 
 export default function VariantShowcase() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const pauseUntil = useRef(0);
-  const dragging = useRef(false);
-  const reducedMotion = useReducedMotion();
   const active = PRODUCT_3D_CONFIG[activeIndex];
   const isDark = active.theme === 'dark';
 
-  useEffect(() => {
-    if (reducedMotion) return;
-    const timer = window.setInterval(() => {
-      if (dragging.current || Date.now() < pauseUntil.current) return;
-      setActiveIndex((index) => (index + 1) % PRODUCT_3D_CONFIG.length);
-    }, 4500);
-    return () => window.clearInterval(timer);
-  }, [reducedMotion]);
-
   const selectProduct = useCallback((index: number) => {
-    pauseUntil.current = Date.now() + 6000;
     setActiveIndex(index);
-  }, []);
-
-  const handleInteractionChange = useCallback((interacting: boolean) => {
-    dragging.current = interacting;
-    if (!interacting) pauseUntil.current = Date.now() + 2500;
   }, []);
 
   return (
@@ -66,7 +47,7 @@ export default function VariantShowcase() {
           </div>
 
           <div className="relative z-10 h-[58svh] min-h-[430px] md:h-[79svh]">
-            <LazyProduct3DScene products={PRODUCT_3D_CONFIG} activeIndex={activeIndex} onInteractionChange={handleInteractionChange} />
+            <LazyProduct3DScene products={PRODUCT_3D_CONFIG} activeIndex={activeIndex} />
           </div>
         </div>
 
