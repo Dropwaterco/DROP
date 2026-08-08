@@ -53,7 +53,7 @@ export default function VariantShowcase() {
 
         <footer className="relative z-20 mx-auto w-full max-w-[1120px] pb-1">
           <div className={`mb-4 flex items-center justify-between text-[10px] uppercase tracking-[.2em] ${isDark ? 'text-white/45' : 'text-black/48'}`}>
-            <span>{active.index} / 04</span>
+            <span>{active.index} / {String(PRODUCT_3D_CONFIG.length).padStart(2, '0')}</span>
             <span>{active.capacity} / recyclable aluminium</span>
           </div>
           <div className={`h-px w-full ${isDark ? 'bg-white/18' : 'bg-black/20'}`} aria-hidden="true" />

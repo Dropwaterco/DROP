@@ -1,7 +1,7 @@
 export type ProductTheme = 'dark' | 'light';
 
 export type Product3DConfig = {
-  id: 'mint' | 'original' | 'athlete' | 'clove';
+  id: 'original' | 'mint' | 'athlete' | 'clove';
   name: string;
   index: string;
   headline: string;

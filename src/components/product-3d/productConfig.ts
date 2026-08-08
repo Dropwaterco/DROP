@@ -19,7 +19,7 @@ export const PRODUCT_3D_CONFIG: readonly Product3DConfig[] = [
   },
   {
     id: 'mint',
-    name: 'MINT WATER',
+    name: 'MINT FUSION',
     index: '02',
     headline: 'WATER.\nAS IT SHOULD BE.',
     description: 'Crisp still water with a clean mint infusion.',
