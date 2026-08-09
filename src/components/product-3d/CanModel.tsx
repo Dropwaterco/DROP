@@ -1,12 +1,15 @@
 'use client';
 
 import { useGLTF } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
+import { LinearFilter } from 'three';
 import type { Group, Material, Mesh, Object3D } from 'three';
 import type { Product3DConfig } from './types';
 
-function materialsFor(object: Object3D) {
+const TEXTURE_KEYS = ['map', 'normalMap', 'roughnessMap', 'metalnessMap', 'aoMap', 'emissiveMap', 'bumpMap', 'alphaMap', 'lightMap'];
+
+function materialsFor(object: Object3D, maxAnisotropy: number) {
   const materials: Material[] = [];
   object.traverse((child) => {
     const mesh = child as Mesh;
@@ -16,6 +19,17 @@ function materialsFor(object: Object3D) {
       const next = material.clone();
       next.transparent = true;
       next.depthWrite = true;
+      TEXTURE_KEYS.forEach((key) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const tex = (next as any)[key];
+        if (!tex) return;
+        tex.anisotropy = maxAnisotropy;
+        if (key === 'map') {
+          tex.minFilter = LinearFilter;
+          tex.generateMipmaps = false;
+        }
+        tex.needsUpdate = true;
+      });
       return next;
     });
     mesh.material = Array.isArray(mesh.material) ? cloned : cloned[0];
@@ -28,10 +42,12 @@ function materialsFor(object: Object3D) {
 
 export function CanModel({ product, active, reducedMotion }: { product: Product3DConfig; active: boolean; reducedMotion: boolean }) {
   const gltf = useGLTF(product.modelUrl);
+  const { gl } = useThree();
   const group = useRef<Group>(null);
   const opacity = useRef(active ? 1 : 0);
+  const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
   const scene = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
-  const materials = useMemo(() => materialsFor(scene), [scene]);
+  const materials = useMemo(() => materialsFor(scene, maxAnisotropy), [scene, maxAnisotropy]);
 
   useEffect(() => () => materials.forEach((material) => material.dispose()), [materials]);
 
