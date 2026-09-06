@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 
-export function MintFusionProductVideo({ active, onReadyChange }: { active: boolean; onReadyChange: (ready: boolean) => void }) {
+export function ProductVideo({ src, active, onReadyChange }: { src: string; active: boolean; onReadyChange: (ready: boolean) => void }) {
   const [failed, setFailed] = useState(false);
 
   return (
     // Benchmark 360 rotating can configuration: 1080x1920 canvas centered with scale-[1.18]
     <video
-      src="/videos/athlete-360-premium.webm"
+      src={src}
       autoPlay
       loop
       muted

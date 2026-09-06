@@ -4,6 +4,8 @@ import Image from 'next/image';
 import type { Product3DConfig } from './types';
 
 export function ProductFallback({ product }: { product: Product3DConfig }) {
+  if (!product.fallbackImage) return null;
+
   return (
     <div className="relative h-full w-full" aria-label={`${product.name} product view`}>
       <Image

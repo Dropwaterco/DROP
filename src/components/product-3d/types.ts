@@ -12,7 +12,7 @@ export type Product3DConfig = {
   capacity: string;
   modelUrl: string;
   modelReady: boolean;
-  fallbackImage: string;
+  fallbackImage?: string;
   modelScale: number;
   modelPositionY: number;
 };
