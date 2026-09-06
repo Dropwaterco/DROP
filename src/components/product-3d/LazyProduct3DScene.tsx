@@ -15,7 +15,7 @@ export function LazyProduct3DScene({ products, activeIndex, onInteractionChange 
   const [productVideoReady, setProductVideoReady] = useState(false);
   const activeProduct = products[activeIndex];
   const videoSrc = activeProduct?.id === 'original'
-    ? '/videos/silver-can.webm'
+    ? '/videos/silver-can-portrait.webm'
     : activeProduct?.id === 'mint'
       ? '/videos/athlete-360-premium.webm'
       : null;
@@ -37,7 +37,7 @@ export function LazyProduct3DScene({ products, activeIndex, onInteractionChange 
           </div>
         ) : null)}
       </div>
-      {videoSrc ? <ProductVideo key={videoSrc} src={videoSrc} active={productVideoReady} onReadyChange={handleVideoReadyChange} theme={activeProduct?.theme} /> : null}
+      {videoSrc ? <ProductVideo key={videoSrc} src={videoSrc} active={productVideoReady} onReadyChange={handleVideoReadyChange} theme={activeProduct?.theme} portraitCrop={activeProduct?.id === 'original'} /> : null}
       <div className="absolute inset-0">
         <Product3DScene products={products} activeIndex={activeIndex} onInteractionChange={onInteractionChange} />
       </div>
