@@ -37,7 +37,7 @@ export function LazyProduct3DScene({ products, activeIndex, onInteractionChange 
           </div>
         ) : null)}
       </div>
-      {videoSrc ? <ProductVideo key={videoSrc} src={videoSrc} active={productVideoReady} onReadyChange={handleVideoReadyChange} /> : null}
+      {videoSrc ? <ProductVideo key={videoSrc} src={videoSrc} active={productVideoReady} onReadyChange={handleVideoReadyChange} theme={activeProduct?.theme} /> : null}
       <div className="absolute inset-0">
         <Product3DScene products={products} activeIndex={activeIndex} onInteractionChange={onInteractionChange} />
       </div>
