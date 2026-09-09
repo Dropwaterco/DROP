@@ -7,8 +7,8 @@ import { ProductFallback } from './ProductFallback';
 import type { Product3DConfig } from './types';
 
 const VIDEO_MAP: Record<string, string> = {
-  original: '/videos/silver-can-portrait-large.webm',
-  mint: '/videos/athlete-360-premium.webm',
+  original: '/videos/silver-can-portrait-clear.webm',
+  mint: '/videos/mint-fusion-portrait-clear.webm',
 };
 
 const Product3DScene = dynamic(() => import('./Product3DScene'), {
@@ -53,7 +53,7 @@ export function LazyProduct3DScene({ products, activeIndex, onInteractionChange 
           </div>
         ) : null)}
       </div>
-      {videoSrc ? <ProductVideo key={videoSrc} src={videoSrc} active={productVideoReady} onReadyChange={handleVideoReadyChange} theme={activeProduct?.theme} portraitCrop={activeProduct?.id === 'original'} /> : null}
+      {videoSrc ? <ProductVideo key={videoSrc} src={videoSrc} active={productVideoReady} onReadyChange={handleVideoReadyChange} theme={activeProduct?.theme} portraitCrop /> : null}
       <div className="absolute inset-0">
         <Product3DScene products={products} activeIndex={activeIndex} onInteractionChange={onInteractionChange} />
       </div>
