@@ -32,10 +32,11 @@ export default function Product3DScene({ products, activeIndex, onInteractionCha
     <div ref={stageRef} className="relative h-full w-full cursor-ew-resize touch-pan-y select-none" data-product-stage>
       {modelsReady ? (
         <Canvas
-          dpr={[1, 2]}
+          dpr={[1, 1.5]}
           frameloop={visible ? 'always' : 'never'}
           camera={{ position: [0, 0.15, 7.4], fov: 30, near: 0.1, far: 100 }}
-          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+          gl={{ antialias: true, alpha: true, powerPreference: 'high-performance', stencil: false, depth: true }}
+          performance={{ min: 0.5 }}
           onCreated={({ gl }) => {
             gl.outputColorSpace = SRGBColorSpace;
             gl.toneMapping = ACESFilmicToneMapping;
