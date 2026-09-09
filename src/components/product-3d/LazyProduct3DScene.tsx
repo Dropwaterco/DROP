@@ -7,8 +7,8 @@ import { ProductFallback } from './ProductFallback';
 import type { Product3DConfig } from './types';
 
 const VIDEO_MAP: Record<string, string> = {
-  original: '/videos/silver-can-portrait-clear.webm',
-  mint: '/videos/mint-fusion-portrait-clear.webm',
+  original: '/videos/silver-can-enhanced-1500.webm',
+  mint: '/videos/mint-fusion-enhanced-1530.webm',
 };
 
 const Product3DScene = dynamic(() => import('./Product3DScene'), {
