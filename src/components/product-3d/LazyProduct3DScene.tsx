@@ -3,6 +3,7 @@
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState } from 'react';
 import { ProductVideo } from './AthleteProductVideo';
+import { AthleteCanVideo } from './AthleteCanVideo';
 import { ProductFallback } from './ProductFallback';
 import type { Product3DConfig } from './types';
 
@@ -54,6 +55,7 @@ export function LazyProduct3DScene({ products, activeIndex, onInteractionChange 
         ) : null)}
       </div>
       {videoSrc ? <ProductVideo key={videoSrc} src={videoSrc} active={productVideoReady} onReadyChange={handleVideoReadyChange} theme={activeProduct?.theme} portraitCrop /> : null}
+      <AthleteCanVideo active={activeProduct?.id === 'athlete'} />
       <div className="absolute inset-0">
         <Product3DScene products={products} activeIndex={activeIndex} onInteractionChange={onInteractionChange} />
       </div>

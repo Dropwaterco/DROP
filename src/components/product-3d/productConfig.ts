@@ -43,7 +43,6 @@ export const PRODUCT_3D_CONFIG: readonly Product3DConfig[] = [
     capacity: '330ML',
     modelUrl: '/models/drop-athlete.glb',
     modelReady: false,
-    fallbackImage: '/assets/turntable/athlete-front.png',
     modelScale: 1,
     modelPositionY: 0,
   },
