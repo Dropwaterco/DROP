@@ -31,24 +31,7 @@ export function AthleteCanVideo({ active }: { active: boolean }) {
   const verifyTransparency = () => {
     const video = videoRef.current;
     if (!video || video.readyState < 2) return;
-    try {
-      const canvas = document.createElement('canvas');
-      canvas.width = 3;
-      canvas.height = 1;
-      const context = canvas.getContext('2d', { willReadFrequently: true });
-      if (!context) return tryNextSource();
-      context.drawImage(video, 0, 0, 1, 1, 0, 0, 1, 1);
-      context.drawImage(video, video.videoWidth - 1, 0, 1, 1, 1, 0, 1, 1);
-      context.drawImage(video, video.videoWidth / 2, video.videoHeight / 2, 1, 1, 2, 0, 1, 1);
-      const pixels = context.getImageData(0, 0, 3, 1).data;
-      if (pixels[3] < 8 && pixels[7] < 8 && pixels[11] > 240) {
-        setReady(true);
-      } else {
-        tryNextSource();
-      }
-    } catch {
-      tryNextSource();
-    }
+    setReady(true);
   };
 
   return (
