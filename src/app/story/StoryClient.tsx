@@ -71,6 +71,8 @@ export default function StoryClient() {
 
   // Compile WebGL shaders
   useEffect(() => {
+    // The editorial theme has no visible shader; avoid a hidden full-screen render loop.
+    if (preset === 'editorial') return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -725,7 +727,7 @@ export default function StoryClient() {
             <header className="grid gap-8 border-y-2 border-black py-8 md:grid-cols-[1fr_auto] md:items-end md:py-12">
               <div>
                 <span className="mb-5 block text-[10px] font-black uppercase tracking-[0.35em]">DROP. archive / Volume 01</span>
-                <h1 className="text-[clamp(4.6rem,15vw,13rem)] font-black uppercase leading-[0.72] tracking-[-0.055em]">
+                <h1 className="text-[clamp(3.5rem,15vw,13rem)] font-black uppercase leading-[0.9] tracking-[-0.04em] md:leading-[0.85]">
                   The
                   <br />
                   Water
@@ -742,11 +744,11 @@ export default function StoryClient() {
               {MILESTONES.map((milestone, index) => (
                 <article
                   key={milestone.year}
-                  className={`group min-h-[360px] border-black p-6 transition-colors duration-300 hover:bg-black hover:text-[#D9FF43] md:p-10 ${
+                  className={`group min-w-0 border-black px-2 py-7 transition-colors duration-300 hover:bg-black hover:text-[#D9FF43] sm:px-6 md:min-h-[360px] md:p-10 ${
                     index % 2 === 0 ? 'md:border-r-2' : ''
-                  } ${index < MILESTONES.length - 2 ? 'border-b-2' : ''}`}
+                  } ${index < MILESTONES.length - 1 ? 'border-b-2' : ''} ${index === MILESTONES.length - 2 ? 'md:border-b-0' : ''}`}
                 >
-                  <div className="mb-16 flex items-start justify-between">
+                  <div className="mb-8 flex items-start justify-between md:mb-16">
                     <span className="text-xs font-black tracking-[0.24em]">{String(index + 1).padStart(2, '0')}</span>
                     <span className="font-[var(--font-heading)] text-6xl font-black leading-none tracking-tighter md:text-8xl">
                       {milestone.year}

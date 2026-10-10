@@ -1,64 +1,31 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect, useRef, useState } from 'react';
 import { ProductVideo } from './AthleteProductVideo';
-import { AthleteCanVideo } from './AthleteCanVideo';
 import { ProductFallback } from './ProductFallback';
 import type { Product3DConfig } from './types';
 
-const VIDEO_MAP: Record<string, string> = {
-  original: '/videos/silver-can-enhanced-1500.webm',
-  mint: '/videos/mint-fusion-enhanced-1530.webm',
+const VIDEO_MAP: Record<string, { src: string; poster: string }> = {
+  original: { src: '/videos/original-can-mobile.mp4?v=2', poster: '/videos/original-can-poster-v2.jpg' },
+  mint: { src: '/videos/mint-can-mobile-v3.mp4', poster: '/videos/mint-can-poster-v3.jpg' },
+  athlete: { src: '/videos/athlete-can-mobile.mp4?v=2', poster: '/videos/athlete-can-poster-v2.jpg' },
 };
 
-const Product3DScene = dynamic(() => import('./Product3DScene'), {
-  ssr: false,
-  loading: () => null,
-});
+const Product3DScene = dynamic(() => import('./Product3DScene'), { ssr: false });
 
 export function LazyProduct3DScene({ products, activeIndex, onInteractionChange }: { products: readonly Product3DConfig[]; activeIndex: number; onInteractionChange?: (interacting: boolean) => void }) {
-  const [productVideoReady, setProductVideoReady] = useState(false);
-  const preloadedRef = useRef(false);
   const activeProduct = products[activeIndex];
-  const videoSrc = VIDEO_MAP[activeProduct?.id] ?? null;
-
-  // Preload all video sources on mount so switching is instant
-  useEffect(() => {
-    if (preloadedRef.current) return;
-    preloadedRef.current = true;
-    Object.values(VIDEO_MAP).forEach((src) => {
-      const link = document.createElement('link');
-      link.rel = 'preload';
-      link.as = 'video';
-      link.href = src;
-      link.type = 'video/webm';
-      document.head.appendChild(link);
-    });
-  }, []);
-
-  const handleVideoReadyChange = (ready: boolean) => {
-    setProductVideoReady(ready);
-  };
+  const video = VIDEO_MAP[activeProduct.id];
 
   return (
-    <div className="relative h-full w-full">
-      <div className="absolute inset-0">
-        {products.map((product, index) => product.fallbackImage ? (
-          <div
-            key={product.id}
-            className={`absolute inset-0 transition-[opacity,transform] duration-300 ease-out ${index === activeIndex ? 'scale-100 opacity-100' : 'pointer-events-none scale-[.975] opacity-0'}`}
-            aria-hidden={index !== activeIndex}
-          >
-            <ProductFallback product={product} />
-          </div>
-        ) : null)}
-      </div>
-      {videoSrc ? <ProductVideo key={videoSrc} src={videoSrc} active={productVideoReady} onReadyChange={handleVideoReadyChange} theme={activeProduct?.theme} portraitCrop /> : null}
-      <AthleteCanVideo active={activeProduct?.id === 'athlete'} />
-      <div className="absolute inset-0">
+    <div className="relative h-full w-full min-w-0" data-product-media>
+      {products.every((product) => product.modelReady) ? (
         <Product3DScene products={products} activeIndex={activeIndex} onInteractionChange={onInteractionChange} />
-      </div>
+      ) : video ? (
+        <ProductVideo key={activeProduct.id} {...video} name={activeProduct.name} />
+      ) : (
+        <ProductFallback product={activeProduct} />
+      )}
     </div>
   );
 }

@@ -23,12 +23,13 @@ export default function HeroNavbar({ activeIndex = 0 }: HeroNavbarProps) {
   const menuRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
 
-  // Prefetch key routes so mobile drawer taps navigate instantly
+  // Warm drawer destinations when needed, instead of competing with initial media.
   useEffect(() => {
+    if (!isMobileMenuOpen) return;
     router.prefetch('/story');
     router.prefetch('/sustainability');
     router.prefetch('/contact');
-  }, [router]);
+  }, [router, isMobileMenuOpen]);
 
   // Default to white if activeIndex is not specified
   const theme = THEMES[activeIndex] || { id: 'default', text: '#FFFFFF', accentBg: '#1A1A1A' };
@@ -62,7 +63,7 @@ export default function HeroNavbar({ activeIndex = 0 }: HeroNavbarProps) {
     <>
       <nav className="absolute top-0 left-0 w-full px-5 py-5 sm:px-8 sm:py-6 flex justify-between items-center z-[100] pointer-events-auto transition-colors duration-1000">
         {/* Left: Logo & Back Button */}
-        <div className="flex items-center gap-3 w-auto md:w-[200px] min-w-0">
+        <div className="flex items-center gap-3 w-auto lg:w-[200px] min-w-0">
           {pathname !== '/' && (
             <Link 
               href="/" 
@@ -83,7 +84,7 @@ export default function HeroNavbar({ activeIndex = 0 }: HeroNavbarProps) {
         
         {/* Center: Toggle-like Nav */}
         <div 
-          className="hidden md:flex gap-2 text-xs font-bold tracking-widest rounded-full p-1.5 border transition-colors duration-1000"
+          className="hidden lg:flex gap-2 text-xs font-bold tracking-widest rounded-full p-1.5 border transition-colors duration-1000"
           style={{ 
             borderColor: `${themeColor}20`, 
             color: themeColor,
@@ -96,10 +97,10 @@ export default function HeroNavbar({ activeIndex = 0 }: HeroNavbarProps) {
         </div>
         
         {/* Right: Waitlist CTA & Mobile Menu */}
-        <div className="flex justify-end gap-2 sm:gap-3 md:gap-6 w-auto md:w-[200px] shrink-0 items-center">
+        <div className="flex justify-end gap-2 sm:gap-3 lg:gap-6 w-auto lg:w-[200px] shrink-0 items-center">
           <Link
             href="/#waitlist"
-            className="hidden md:inline-flex px-4 py-2 text-[10px] font-black tracking-[0.2em] uppercase border transition-colors duration-1000 focus:outline-none focus:ring-2 focus:ring-white rounded-sm hover:bg-white/10"
+            className="hidden lg:inline-flex px-4 py-2 text-[10px] font-black tracking-[0.2em] uppercase border transition-colors duration-1000 focus:outline-none focus:ring-2 focus:ring-white rounded-sm hover:bg-white/10"
             style={{ 
               borderColor: `${themeColor}40`, 
               color: themeColor,
@@ -112,7 +113,7 @@ export default function HeroNavbar({ activeIndex = 0 }: HeroNavbarProps) {
           <button 
             ref={triggerRef}
             onClick={() => setIsMobileMenuOpen(true)} 
-            className="md:hidden hover:scale-105 active:scale-95 transition-transform duration-200 relative p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-white rounded-md touch-manipulation" 
+            className="lg:hidden hover:scale-105 active:scale-95 transition-transform duration-200 relative p-2 min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-white rounded-md touch-manipulation"
             aria-label="Menu"
             aria-expanded={isMobileMenuOpen}
           >

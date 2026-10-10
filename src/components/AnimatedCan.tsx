@@ -5,25 +5,25 @@ import Image from 'next/image';
 import Link from 'next/link';
 import gsap from 'gsap';
 
-// CANS defines the display scaling and filter effects for each variant of can.
+// Cropped exports share a consistent frame without stretching the packaging.
 const CANS = [
   { 
-    id: 'purple', src: '/assets/new-can-variant-1.png', alt: 'DROP mint functional water can in premium purple aluminium packaging', scale: 2.2, widthScale: 1,
+    id: 'purple', src: '/assets/cans/mint.webp', alt: 'DROP mint functional water can in premium purple aluminium packaging',
     filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.8))',
     mobileFilter: 'drop-shadow(0 10px 15px rgba(0,0,0,0.5))'
   },
   { 
-    id: 'red', src: '/assets/clove_can_transparent_fixed.png', alt: 'DROP clove water in a premium blood red aluminium can', scale: 2.05, widthScale: 1.16,
+    id: 'red', src: '/assets/cans/clove.webp', alt: 'DROP clove water in a premium blood red aluminium can',
     filter: 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.5)) drop-shadow(0px 10px 30px rgba(0,0,0,0.15))',
     mobileFilter: 'drop-shadow(0px 5px 15px rgba(0,0,0,0.3))'
   },
   { 
-    id: 'black', src: '/assets/black_can_extracted.png', alt: 'DROP athlete edition functional water in a matte black aluminium can', scale: 1.1, widthScale: 1,
+    id: 'black', src: '/assets/cans/athlete.webp', alt: 'DROP athlete edition functional water in a matte black aluminium can',
     filter: 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.5)) drop-shadow(0px 10px 30px rgba(0,0,0,0.15))',
     mobileFilter: 'drop-shadow(0px 5px 15px rgba(0,0,0,0.3))'
   },
   {
-    id: 'silver', src: '/assets/new-can-2.png', alt: 'DROP premium still water in a sleek silver aluminium can', scale: 2.2, widthScale: 1,
+    id: 'silver', src: '/assets/cans/original.webp', alt: 'DROP premium still water in a sleek silver aluminium can',
     filter: 'drop-shadow(0px 0px 1.5px rgba(0,0,0,0.5)) drop-shadow(0px 10px 30px rgba(0,0,0,0.15))',
     mobileFilter: 'drop-shadow(0px 5px 15px rgba(0,0,0,0.3))'
   }
@@ -36,13 +36,33 @@ export default function AnimatedCan({ activeIndex }: { activeIndex: number }) {
   const isFirstRender = useRef(true);
   const isMobileRef = useRef(false);
   const floatingTweenRef = useRef<gsap.core.Tween | null>(null);
+  const visibleRef = useRef(false);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => floatingTweenRef.current?.paused(!visibleRef.current || document.hidden || motion.matches);
+    const observer = new IntersectionObserver(([entry]) => {
+      visibleRef.current = entry.isIntersecting;
+      sync();
+    });
+    observer.observe(container);
+    document.addEventListener('visibilitychange', sync);
+    motion.addEventListener('change', sync);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+      motion.removeEventListener('change', sync);
+    };
+  }, []);
 
   // One-time mobile check via ref (no re-render)
   useEffect(() => {
-    isMobileRef.current = window.innerWidth < 768;
+    isMobileRef.current = window.innerWidth < 1024;
     
     const handleResize = () => {
-      isMobileRef.current = window.innerWidth < 768;
+      isMobileRef.current = window.innerWidth < 1024;
     };
     
     window.addEventListener('resize', handleResize, { passive: true });
@@ -67,6 +87,7 @@ export default function AnimatedCan({ activeIndex }: { activeIndex: number }) {
       repeat: -1,
       yoyo: true,
       ease: 'sine.inOut',
+      paused: !visibleRef.current || document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches,
     });
   };
 
@@ -138,8 +159,9 @@ export default function AnimatedCan({ activeIndex }: { activeIndex: number }) {
 
   // Cleanup all GSAP tweens on unmount
   useEffect(() => {
+    const cans = canRefs.current;
     return () => {
-      canRefs.current.forEach(can => {
+      cans.forEach(can => {
         if (can) gsap.killTweensOf(can);
       });
       if (floatingTweenRef.current) {
@@ -151,7 +173,7 @@ export default function AnimatedCan({ activeIndex }: { activeIndex: number }) {
   return (
     <div
       ref={containerRef}
-      className="relative z-[45] pointer-events-none flex flex-col items-center justify-center w-full max-w-[220px] h-[clamp(300px,43svh,390px)] mx-auto mb-10 overflow-visible md:absolute md:right-[30%] md:translate-x-1/2 md:top-1/2 md:-translate-y-1/2 md:z-[60] md:w-[30vw] md:max-w-[500px] md:h-[clamp(400px,60vh,700px)] md:mx-0 md:mb-0"
+      className="relative z-[45] pointer-events-none flex flex-col items-center justify-center w-full max-w-[240px] h-[clamp(240px,34svh,320px)] mx-auto mb-8 overflow-visible lg:absolute lg:right-[30%] lg:translate-x-1/2 lg:top-1/2 lg:-translate-y-1/2 lg:z-[60] lg:w-[30vw] lg:max-w-[500px] lg:h-[clamp(400px,60vh,700px)] lg:mx-0 lg:mb-0"
     >
       {CANS.map((can, idx) => (
         <div 
@@ -172,25 +194,21 @@ export default function AnimatedCan({ activeIndex }: { activeIndex: number }) {
                 fill
                 priority={idx === 0}
                 loading={idx === 0 ? 'eager' : 'lazy'}
-                quality={85}
-                sizes="(max-width: 768px) 210px, (max-width: 1200px) 40vw, 900px"
-                className="object-contain object-center transition-transform"
+                quality={90}
+                sizes="(max-width: 1023px) 240px, (max-width: 1200px) 30vw, 500px"
+                className="object-contain object-center p-3 lg:p-8"
                 style={{ 
                   mixBlendMode: 'normal',
-                  transform: `scale(${can.scale * 0.62}) scaleX(${can.widthScale})`,
                 }}
               />
-              {/* Desktop: use CSS media query for larger scale instead of JS state */}
+              {/* Use lighter shadows on mobile */}
               <style dangerouslySetInnerHTML={{__html: `
-                @media (min-width: 768px) {
-                  [data-can-id="${can.id}"] img {
-                    transform: scale(${can.scale}) scaleX(${can.widthScale}) !important;
-                  }
+                @media (min-width: 1024px) {
                   [data-can-id="${can.id}"] {
                     filter: ${can.filter};
                   }
                 }
-                @media (max-width: 767px) {
+                @media (max-width: 1023px) {
                   [data-can-id="${can.id}"] {
                     filter: ${can.mobileFilter};
                   }

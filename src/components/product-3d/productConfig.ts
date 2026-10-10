@@ -58,7 +58,7 @@ export const PRODUCT_3D_CONFIG: readonly Product3DConfig[] = [
     capacity: '500ML',
     modelUrl: '/models/drop-clove.glb',
     modelReady: false,
-    fallbackImage: '/assets/clove_can_transparent_fixed.png',
+    fallbackImage: '/assets/cans/clove.webp',
     modelScale: 1,
     modelPositionY: 0,
   },

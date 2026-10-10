@@ -1,7 +1,7 @@
 "use client"
 
 import { cn } from "@/lib/utils"
-import React, { useEffect, useRef, useState, useCallback } from "react"
+import React, { useEffect, useRef, useMemo, useCallback } from "react"
 
 interface ParticlesProps {
   className?: string
@@ -59,15 +59,10 @@ const Particles: React.FC<ParticlesProps> = ({
   const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 })
   const rafIdRef = useRef<number | null>(null)
   const isVisibleRef = useRef(false)
-  const [isMobile, setIsMobile] = useState(false)
   const dpr = typeof window !== "undefined" ? Math.min(window.devicePixelRatio, 2) : 1
 
-  const rgb = hexToRgb(color)
+  const rgb = useMemo(() => hexToRgb(color), [color])
 
-  // Detect mobile to reduce particle count
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768)
-  }, [])
 
   const resizeCanvas = useCallback(() => {
     if (canvasContainerRef.current && canvasRef.current && context.current) {
@@ -122,20 +117,20 @@ const Particles: React.FC<ParticlesProps> = ({
 
   const drawParticles = useCallback(() => {
     clearContext()
-    const particleCount = isMobile ? Math.min(quantity, 40) : quantity
+    const particleCount = window.matchMedia("(max-width: 767px)").matches ? Math.min(quantity, 40) : quantity
     for (let i = 0; i < particleCount; i++) {
       const circle = circleParams()
       drawCircle(circle)
     }
-  }, [clearContext, circleParams, drawCircle, quantity, isMobile])
+  }, [clearContext, circleParams, drawCircle, quantity])
 
   const remapValue = useCallback((value: number, start1: number, end1: number, start2: number, end2: number): number => {
     const remapped = ((value - start1) * (end2 - start2)) / (end1 - start1) + start2
     return remapped > 0 ? remapped : 0
   }, [])
 
-  const animate = useCallback(() => {
-    if (!isVisibleRef.current) {
+  const animate = useCallback(function tick() {
+    if (!isVisibleRef.current || document.hidden) {
       rafIdRef.current = null
       return
     }
@@ -180,7 +175,7 @@ const Particles: React.FC<ParticlesProps> = ({
         drawCircle(newCircle)
       }
     }
-    rafIdRef.current = window.requestAnimationFrame(animate)
+    rafIdRef.current = window.requestAnimationFrame(tick)
   }, [clearContext, circleParams, drawCircle, ease, remapValue, staticity, vx, vy])
 
   // Mouse handling via ref (no setState)
@@ -211,13 +206,24 @@ const Particles: React.FC<ParticlesProps> = ({
     resizeCanvas()
     drawParticles()
 
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const sync = () => {
+      if (rafIdRef.current !== null) {
+        window.cancelAnimationFrame(rafIdRef.current)
+        rafIdRef.current = null
+      }
+      if (isVisibleRef.current && !document.hidden && !motion.matches) {
+        rafIdRef.current = window.requestAnimationFrame(animate)
+      }
+    }
+    document.addEventListener('visibilitychange', sync)
+    motion.addEventListener('change', sync)
+
     // Only animate when visible
     const observer = new IntersectionObserver(
       ([entry]) => {
         isVisibleRef.current = entry.isIntersecting
-        if (entry.isIntersecting && rafIdRef.current === null) {
-          rafIdRef.current = window.requestAnimationFrame(animate)
-        }
+        sync()
       },
       { threshold: 0 }
     )
@@ -238,6 +244,8 @@ const Particles: React.FC<ParticlesProps> = ({
         rafIdRef.current = null
       }
       observer.disconnect()
+      document.removeEventListener("visibilitychange", sync)
+      motion.removeEventListener("change", sync)
       window.removeEventListener("resize", handleResize)
     }
   }, [color, animate, resizeCanvas, drawParticles])

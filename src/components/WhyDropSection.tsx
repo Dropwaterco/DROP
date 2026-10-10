@@ -34,10 +34,10 @@ export default function WhyDropSection() {
     <section className="relative overflow-hidden bg-[#E9E2D6] text-[#151515]">
       <div className="absolute inset-x-0 top-0 h-px bg-black/10" />
       <div className="mx-auto grid max-w-[1500px] lg:grid-cols-[0.9fr_1.1fr]">
-        <div className="relative flex min-h-[58svh] flex-col justify-between overflow-hidden bg-[#C9A84C] px-6 py-16 sm:px-10 md:px-16 md:py-24 lg:min-h-[860px]">
+        <div className="relative flex flex-col justify-between overflow-hidden bg-[#C9A84C] px-6 py-10 sm:px-10 md:px-16 md:py-24 lg:min-h-[860px]">
           <span className="text-[10px] font-black tracking-[0.34em] uppercase">The DROP. standard / 03</span>
 
-          <div className="relative z-10 my-20">
+          <div className="relative z-10 my-12 md:my-20">
             <p className="mb-5 max-w-sm text-sm font-bold uppercase tracking-[0.18em] text-black/55">
               Less noise. More intention.
             </p>
@@ -72,7 +72,7 @@ export default function WhyDropSection() {
             {features.map(({ num, title, body, metric, unit, icon: Icon }) => (
               <article
                 key={num}
-                className="group grid grid-cols-[3rem_1fr] gap-4 border-b border-white/15 py-8 transition-colors duration-500 first:border-t hover:bg-white/[0.035] sm:grid-cols-[4rem_1fr_auto] sm:gap-6 md:py-10"
+                className="group grid grid-cols-[1.5rem_minmax(0,1fr)] gap-3 border-b border-white/15 py-8 transition-colors duration-500 first:border-t hover:bg-white/[0.035] sm:grid-cols-[4rem_1fr_auto] sm:gap-6 md:py-10"
               >
                 <span className="pt-1 text-[10px] font-black tracking-[0.2em] text-[#C9A84C]">{num}</span>
                 <div>

@@ -171,7 +171,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                 placeholder={field.placeholder}
                 required={field.required}
                 rows={3}
-                className="w-full py-2.5 sm:py-3 bg-transparent border-b border-white/15 text-white text-base sm:text-sm font-medium focus:outline-none transition-colors duration-150 rounded-none resize-none placeholder:text-white/20"
+                className="w-full py-2.5 sm:py-3 bg-transparent border-b border-white/15 text-white text-base font-medium focus:outline-none transition-colors duration-150 rounded-none resize-none placeholder:text-white/20"
                 style={{ caretColor: accent }}
                 onFocus={(e) => (e.target.style.borderColor = accent)}
                 onBlur={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}
@@ -186,7 +186,7 @@ export default function LeadForm({ config }: { config: LeadFormConfig }) {
                 onChange={(e) => handleChange(field.name, e.target.value)}
                 placeholder={field.placeholder}
                 required={field.required}
-                className="w-full py-2.5 sm:py-3 bg-transparent border-b border-white/15 text-white text-base sm:text-sm font-medium focus:outline-none transition-colors duration-150 rounded-none placeholder:text-white/20"
+                className="w-full py-2.5 sm:py-3 bg-transparent border-b border-white/15 text-white text-base font-medium focus:outline-none transition-colors duration-150 rounded-none placeholder:text-white/20"
                 style={{ caretColor: accent }}
                 onFocus={(e) => (e.target.style.borderColor = accent)}
                 onBlur={(e) => (e.target.style.borderColor = 'rgba(255,255,255,0.15)')}

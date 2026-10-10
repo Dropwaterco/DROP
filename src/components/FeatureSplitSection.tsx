@@ -52,12 +52,12 @@ export default function FeatureSplitSection() {
     <section 
       id="features" 
       ref={sectionRef}
-      className="relative w-full min-h-[100svh] bg-[#F4F4F3] text-[#111111] flex flex-col lg:flex-row overflow-hidden border-b border-[#E5E5E5]/30 z-10 m-0 p-0"
+      className="relative w-full lg:min-h-[100svh] bg-[#F4F4F3] text-[#111111] flex flex-col lg:flex-row overflow-hidden border-b border-[#E5E5E5]/30 z-10 m-0 p-0"
       style={{ marginTop: 0, marginBottom: 0 }}
     >
       
       {/* Left side: Image Marquee (Horizontal on Mobile, Vertical on Desktop) */}
-      <div className="w-full lg:w-[49%] h-[50svh] lg:h-[100svh] relative overflow-hidden bg-[#EBEBEA] select-none pointer-events-none">
+      <div className="w-full lg:w-[49%] h-[clamp(260px,42svh,380px)] lg:h-[100svh] relative overflow-hidden bg-[#EBEBEA] select-none pointer-events-none">
         
         <div className="absolute inset-0 flex flex-col lg:flex-row gap-3 lg:gap-4 p-3 lg:p-4 justify-center">
           
@@ -133,7 +133,7 @@ export default function FeatureSplitSection() {
           </p>
 
           {/* Feature Grid */}
-          <div className="grid grid-cols-2 gap-6 md:gap-8 mb-12">
+          <div className="grid grid-cols-2 gap-x-3 gap-y-5 sm:gap-6 md:gap-8 mb-8 md:mb-12">
             <div className="flex items-center gap-3">
               <div className="p-3 bg-white rounded-full shadow-md text-[#1A5F7A]">
                 <Ban size={24} strokeWidth={2.5} />
@@ -173,7 +173,7 @@ export default function FeatureSplitSection() {
 
       <style dangerouslySetInnerHTML={{__html: `
         .marquee-item {
-          width: var(--item-w);
+          width: clamp(140px, 42vw, 240px);
           height: 100%;
         }
 

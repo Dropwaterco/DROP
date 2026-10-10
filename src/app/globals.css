@@ -17,6 +17,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
   }
 
   *,
@@ -89,18 +90,12 @@
   }
 
   @media (max-width: 767px) {
-    main,
-    section,
-    header,
-    footer,
-    nav {
-      width: 100%;
-      max-width: 100%;
-    }
-
-    p {
-      font-size: max(1rem, 16px);
-      line-height: 1.6;
+    /* Prevent focus zoom on phones without overriding all paragraph sizes. */
+    input,
+    select,
+    textarea {
+      font-size: 16px;
+      min-width: 0;
     }
 
     button,

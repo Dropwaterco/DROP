@@ -1,41 +1,78 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import { useReducedMotion } from './useReducedMotion';
 
-export function ProductVideo({ src, active, onReadyChange, theme = 'light', portraitCrop = false }: { src: string; active: boolean; onReadyChange: (ready: boolean) => void; theme?: 'light' | 'dark'; portraitCrop?: boolean }) {
+export function ProductVideo({ src, poster, name }: { src: string; poster: string; name: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [nearViewport, setNearViewport] = useState(false);
+  const [hasEntered, setHasEntered] = useState(false);
+  const reducedMotion = useReducedMotion();
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      setNearViewport(entry.isIntersecting);
+      if (entry.isIntersecting) setHasEntered(true);
+    }, { rootMargin: '160px 0px' });
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    let cancelled = false;
+    const syncPlayback = () => {
+      if (nearViewport && !reducedMotion && !document.hidden) {
+        // Low Power Mode can block autoplay. Keep the poster in that case.
+        void video.play().catch(() => { if (!cancelled) setReady(false); });
+      } else {
+        video.pause();
+      }
+    };
+    syncPlayback();
+    document.addEventListener('visibilitychange', syncPlayback);
+    return () => {
+      cancelled = true;
+      video.pause();
+      document.removeEventListener('visibilitychange', syncPlayback);
+    };
+  }, [nearViewport, hasEntered, reducedMotion, failed]);
 
   return (
-    <div
-      className={`pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden select-none transition-opacity duration-300 ease-out ${active && !failed ? 'opacity-100' : 'opacity-0'}`}
-      style={{ willChange: 'opacity' }}
-    >
-      <div className={portraitCrop ? 'relative aspect-[9/16] w-[clamp(280px,55vw,360px)] overflow-hidden bg-transparent md:w-[clamp(420px,30vw,560px)]' : 'relative h-full w-full overflow-hidden bg-transparent'}>
-        <video
-          src={src}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          aria-hidden="true"
-          onLoadStart={() => onReadyChange(false)}
-          onLoadedData={() => {
-            setFailed(false);
-            onReadyChange(true);
-          }}
-          onCanPlay={() => onReadyChange(true)}
-          onError={() => {
-            setFailed(true);
-            onReadyChange(false);
-          }}
-          className="absolute left-1/2 top-1/2 h-full w-auto max-w-none -translate-x-1/2 -translate-y-1/2 object-contain"
-          style={{
-            mixBlendMode: portraitCrop ? 'normal' : theme === 'dark' ? 'lighten' : 'screen',
-            background: 'transparent',
-            backfaceVisibility: 'hidden',
-          }}
+    <div ref={containerRef} className="absolute inset-0 flex items-center justify-center select-none">
+      <div className="relative h-full max-w-full aspect-[9/14]">
+        <Image
+          src={poster}
+          alt={`DROP ${name.toLowerCase()} aluminium water can`}
+          fill
+          sizes="(max-width: 767px) 280px, 440px"
+          quality={90}
+          priority
+          className="object-contain"
+          draggable={false}
         />
+        {!failed && hasEntered && !reducedMotion && (
+          <video
+            ref={videoRef}
+            src={src}
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            onLoadStart={() => setReady(false)}
+            onPlaying={() => setReady(true)}
+            onError={() => { setReady(false); setFailed(true); }}
+            className={`pointer-events-none absolute inset-0 h-full w-full object-contain transition-opacity duration-200 ${ready ? 'opacity-100' : 'opacity-0'}`}
+          />
+        )}
       </div>
     </div>
   );
