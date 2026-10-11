@@ -38,15 +38,13 @@ export function AthleteCanVideo({ active }: { active: boolean }) {
     <div
       aria-hidden={!active}
       data-athlete-media
-      className={`pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden select-none transition-opacity duration-300 ease-out ${active ? 'opacity-100' : 'opacity-0'}`}
+      className={`pointer-events-none absolute inset-0 flex items-center justify-center select-none transition-opacity duration-300 ease-out ${active ? 'opacity-100' : 'opacity-0'}`}
     >
-      <div className="relative flex aspect-[9/16] w-[clamp(280px,55vw,360px)] items-center justify-center md:w-[clamp(420px,30vw,560px)]">
-        <div className="relative aspect-[69/100] h-[70%]">
+      <div className="relative h-[88%] max-w-full aspect-[9/14]">
           <Image
             src="/videos/athlete-can-poster.png"
             alt="DROP athlete edition aluminium water can"
             fill
-            preload
             unoptimized
             draggable={false}
             className="object-contain"
@@ -72,7 +70,6 @@ export function AthleteCanVideo({ active }: { active: boolean }) {
               style={{ visibility: ready ? 'visible' : 'hidden', background: 'transparent' }}
             />
           ) : null}
-        </div>
       </div>
     </div>
   );
