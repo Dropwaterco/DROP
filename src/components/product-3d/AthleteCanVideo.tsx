@@ -59,7 +59,7 @@ export function AthleteCanVideo({ active }: { active: boolean }) {
               loop
               muted
               playsInline
-              preload={active ? 'auto' : 'metadata'}
+              preload="auto"
               aria-hidden="true"
               onLoadStart={() => setReady(false)}
               onLoadedData={verifyTransparency}
