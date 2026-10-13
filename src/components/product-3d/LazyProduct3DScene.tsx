@@ -9,6 +9,7 @@ import type { Product3DConfig } from './types';
 const VIDEO_MAP: Record<string, { src: string; poster: string }> = {
   original: { src: '/videos/original-can-mobile.mp4?v=2', poster: '/videos/original-can-poster-v2.jpg' },
   mint: { src: '/videos/mint-can-mobile-v3.mp4', poster: '/videos/mint-can-poster-v3.jpg' },
+  clove: { src: '/videos/clove-can-mobile.mp4?v=2', poster: '/videos/clove-can-poster-v2.jpg' },
 };
 
 const Product3DScene = dynamic(() => import('./Product3DScene'), { ssr: false });
