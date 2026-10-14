@@ -37,20 +37,20 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
         <p className="text-white/40 text-sm font-medium mb-12">
-          Last updated: {new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}
+          Last updated: 14 October 2026
         </p>
 
         <div className="prose prose-invert prose-sm max-w-none space-y-8 text-white/70 leading-relaxed">
           <section>
             <h2 className="text-white text-lg font-black uppercase tracking-wider mb-3">1. Information We Collect</h2>
             <p>
-              When you use our website or sign up for our waitlist, we may collect the following personal information:
+              You can browse our products without creating an account or submitting a form. If you choose to join the individual waitlist or submit a business enquiry through the forms below the product section, we collect the information you provide:
             </p>
             <ul className="list-disc pl-6 space-y-1 mt-2">
               <li>Name and email address (provided during waitlist signup)</li>
-              <li>City and preferences (optional, provided during waitlist signup)</li>
-              <li>Business details (for B2B enquiries: business name, type, contact information)</li>
-              <li>Basic usage data (pages visited, browser type)</li>
+              <li>City and where you would drink DROP. (optional waitlist fields)</li>
+              <li>Business name, contact name, work email address, and business type (business enquiry fields)</li>
+              <li>Phone number and estimated monthly volume (optional business enquiry fields)</li>
             </ul>
           </section>
 
@@ -61,7 +61,6 @@ export default function PrivacyPage() {
               <li>Process and manage waitlist registrations</li>
               <li>Send product launch announcements and updates (you can unsubscribe at any time)</li>
               <li>Respond to B2B enquiries and partnership requests</li>
-              <li>Improve and optimise our website and services</li>
               <li>Comply with legal obligations</li>
             </ul>
           </section>
@@ -69,7 +68,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-white text-lg font-black uppercase tracking-wider mb-3">3. Data Storage and Security</h2>
             <p>
-              Your data is stored securely using industry-standard encryption and access controls. We use MongoDB for data storage and Redis for session management. Passwords are hashed using bcrypt and are never stored in plaintext.
+              We store submitted waitlist and business enquiry details to manage registrations and respond to requests. Neither form asks you to create an account or provide a password. To request correction or deletion of your submitted information, contact founder@dropwater.in.
             </p>
           </section>
 

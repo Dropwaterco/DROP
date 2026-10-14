@@ -37,7 +37,7 @@ export default function TermsPage() {
           Terms of Service
         </h1>
         <p className="text-white/40 text-sm font-medium mb-12">
-          Last updated: {new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}
+          Last updated: 14 October 2026
         </p>
 
         <div className="prose prose-invert prose-sm max-w-none space-y-8 text-white/70 leading-relaxed">
@@ -51,21 +51,29 @@ export default function TermsPage() {
           <section>
             <h2 className="text-white text-lg font-black uppercase tracking-wider mb-3">2. Description of Service</h2>
             <p>
-              DROP. is a premium canned water brand. Our website provides information about our products, allows users to join our waitlist, submit business enquiries, and create accounts. DROP. has not yet launched commercially; all product references are pre-launch.
+              DROP. is a premium canned water brand. Our website provides information about our products, lets individuals join our launch waitlist, and lets businesses submit wholesale enquiries through the forms below the product section. You do not need to create an account to browse our products or submit either form. DROP. has not yet launched commercially; all product references are pre-launch.
             </p>
           </section>
 
           <section>
-            <h2 className="text-white text-lg font-black uppercase tracking-wider mb-3">3. User Accounts</h2>
+            <h2 className="text-white text-lg font-black uppercase tracking-wider mb-3">3. Information You Provide Through Our Forms</h2>
             <p>
-              When creating an account, you agree to provide accurate and complete information. You are responsible for maintaining the confidentiality of your account credentials. You must notify us immediately of any unauthorised use of your account.
+              Both forms are voluntary. The individual waitlist form collects your name and email address, with optional fields for your city and where you would drink DROP. We use these details to manage your registration and contact you about the product launch. You can ask to leave the waitlist by emailing{' '}
+              <a href="mailto:founder@dropwater.in" className="text-[#C9A84C] hover:underline">founder@dropwater.in</a>.
+            </p>
+            <p className="mt-3">
+              Submitting a business enquiry through the form below the product section is voluntary. The form asks for your business name, contact name, work email address, and business type. You may also provide a phone number and estimated monthly volume. Please provide accurate information and only contact details you are authorised to share.
+            </p>
+            <p className="mt-3">
+              We use the information submitted with your business enquiry to respond to your request, discuss wholesale requirements, and follow up on that enquiry. For details about how information is handled, please read our{' '}
+              <Link href="/privacy" className="text-[#C9A84C] hover:underline">Privacy Policy</Link>.
             </p>
           </section>
 
           <section>
-            <h2 className="text-white text-lg font-black uppercase tracking-wider mb-3">4. Waitlist and Pre-Orders</h2>
+            <h2 className="text-white text-lg font-black uppercase tracking-wider mb-3">4. Enquiries and Product Availability</h2>
             <p>
-              Joining our waitlist does not constitute a purchase or binding agreement. We reserve the right to modify pricing, availability, and launch timelines. Waitlist position does not guarantee product availability.
+              Joining the waitlist or submitting a business enquiry does not constitute a purchase, confirmed order, or binding supply agreement, and does not guarantee product availability. Product details, pricing, availability, and launch timelines may change. Any business order or supply arrangement must be agreed separately with DROP.
             </p>
           </section>
 
